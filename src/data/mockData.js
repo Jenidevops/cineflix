@@ -111,8 +111,8 @@ export const categories = [
     ]
   },
   {
-    id: 'sci-fi',
-    title: 'Sci-Fi Adventures',
+    id: 'sci-fiction',
+    title: 'Sci-Fiction Adventures',
     items: [
       { id: 35, title: 'Altered Carbon', image: alteredcarbonImg, match: 91, year: 2023, rating: 'TV-MA', duration: '2 Seasons' },
       { id: 36, title: 'Black Mirror', image: blackmirrorImg, match: 93, year: 2023, rating: 'TV-MA', duration: '6 Seasons' },

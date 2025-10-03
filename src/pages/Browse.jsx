@@ -163,7 +163,7 @@ export default function Browse() {
         category = categories.find(cat => cat.id === 'horror')
         break
       case 'Sci-Fiction':
-        category = categories.find(cat => cat.id === 'scifi')
+        category = categories.find(cat => cat.id === 'sci-fiction')
         break
       default:
         category = null

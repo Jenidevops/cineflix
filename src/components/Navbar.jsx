@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Bell, ChevronDown, User, Settings, LogOut, Heart } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
-import logo from '../images/logo/logo.png'
 
 export default function Navbar({ showLinks = true, onNavClick, searchComponent }) {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -40,18 +39,11 @@ export default function Navbar({ showLinks = true, onNavClick, searchComponent }
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-black' : 'bg-gradient-to-b from-black to-transparent'}`}>
-      <div className="flex items-center justify-between px-4 md:px-12 py-4">
+      <div className="flex items-center justify-between px-4 md:px-12 py-1">
         {/* Left Section */}
         <div className="flex items-center space-x-8">
           <Link to="/" onClick={() => onNavClick && onNavClick('Home')}>
-            <img
-              src={logo}
-              alt="CineFlix Logo"
-              className="h-20 md:h-30 lg:h-28 w-auto cursor-pointer transition-transform duration-300 hover:scale-105
-                         relative hover:after:content-[''] hover:after:absolute hover:after:inset-0
-                         hover:after:rounded-md hover:after:shadow-[0_0_20px_rgba(255,255,255,0.8)]
-                         hover:after:animate-pulse"
-            />
+            <h1 className="logo">CineFlix</h1>
           </Link>
 
           {showLinks && (

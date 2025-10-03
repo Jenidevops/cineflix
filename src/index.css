@@ -19,3 +19,53 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+@keyframes pulseGlow {
+  0%, 100% {
+    text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000;
+    opacity: 1;
+  }
+  50% {
+    text-shadow: 0 0 10px #ff4d4d, 0 0 20px #ff4d4d, 0 0 30px #ff4d4d;
+    opacity: 0.8;
+  }
+}
+
+@keyframes gentlePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #e50914; /* Netflix red */
+  cursor: pointer;
+  text-transform: uppercase;
+  user-select: none;
+  background: none;
+  padding: 0 0.25rem;
+  border-radius: 0.25rem;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  animation: gentlePulse 2.5s infinite;
+  text-shadow: none;
+}
+
+@media (min-width: 768px) {
+  .logo {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .logo {
+    font-size: 2.5rem;
+  }
+}
