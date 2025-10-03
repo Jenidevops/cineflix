@@ -106,82 +106,84 @@ Whether you're discovering new movies, managing your favorites, or watching trai
 
 ## 📁 Project Structure
 
+Based on your React + Vite + Tailwind CSS implementation:
+
 ```
-cineflex/
-├── public/
-│   ├── vite.svg
-│   └── favicon.ico
+cineflix/
+│
+├── public/                     # Static files
+│   └── vite.svg               # Vite logo
 │
 ├── src/
-│   ├── assets/              # Images, icons, and static files
-│   │   ├── images/
-│   │   └── icons/
 │   │
-│   ├── components/          # Reusable UI components
-│   │   ├── common/
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── Footer.jsx
-│   │   │   ├── Loader.jsx
-│   │   │   └── Button.jsx
-│   │   ├── Auth/
-│   │   │   ├── Login.jsx
-│   │   │   ├── Signup.jsx
-│   │   │   └── AuthForm.jsx
-│   │   ├── Movies/
-│   │   │   ├── MovieCard.jsx
-│   │   │   ├── MovieList.jsx
-│   │   │   ├── MovieDetails.jsx
-│   │   │   ├── TrailerPlayer.jsx
-│   │   │   └── FavoriteButton.jsx
-│   │   └── Layout/
-│   │       ├── Header.jsx
-│   │       └── Container.jsx
+│   ├── components/            # Reusable components
+│   │   ├── Navbar.jsx        # Navigation bar with logo & menu
+│   │   ├── Footer.jsx        # Footer section
+│   │   ├── MovieCard.jsx     # Individual movie card component
+│   │   ├── TrailerPlayer.jsx # Video player for trailers
+│   │   ├── FavoriteButton.jsx # Add/Remove from favorites
+│   │   ├── LikeButton.jsx    # Thumbs up/like functionality
+│   │   └── Loader.jsx        # Loading spinner
 │   │
-│   ├── pages/               # Page components
-│   │   ├── Home.jsx
-│   │   ├── Startup.jsx
-│   │   ├── Login.jsx
-│   │   ├── Signup.jsx
-│   │   ├── MovieDetails.jsx
-│   │   ├── Favorites.jsx
-│   │   └── NotFound.jsx
+│   ├── pages/                 # Main application pages
+│   │   ├── Startup.jsx       # Landing/Welcome page
+│   │   ├── Signup.jsx        # User registration page
+│   │   ├── Login.jsx         # User login page
+│   │   ├── Home.jsx          # Main dashboard with movies
+│   │   ├── MovieDetails.jsx  # Individual movie details page
+│   │   └── Favorites.jsx     # User's favorite movies collection
 │   │
-│   ├── context/             # React Context for state management
-│   │   ├── AuthContext.jsx
-│   │   └── MovieContext.jsx
+│   ├── api/                   # API integration
+│   │   └── tmdb.js           # TMDB API configuration & calls
 │   │
-│   ├── services/            # API service functions
-│   │   ├── api.js
-│   │   ├── authService.js
-│   │   └── movieService.js
+│   ├── context/               # State management (if using Context API)
+│   │   └── AuthContext.jsx   # Authentication state
 │   │
-│   ├── hooks/               # Custom React hooks
-│   │   ├── useAuth.js
-│   │   ├── useFavorites.js
-│   │   └── useMovies.js
+│   ├── hooks/                 # Custom React hooks (optional)
+│   │   └── useFavorites.js   # Custom hook for favorites logic
 │   │
-│   ├── utils/               # Utility functions
-│   │   ├── helpers.js
-│   │   ├── constants.js
-│   │   └── validators.js
+│   ├── assets/                # Static assets
+│   │   ├── images/           # Images and graphics
+│   │   └── logo.png          # App logo
 │   │
-│   ├── routes/              # Route configuration
-│   │   └── AppRoutes.jsx
+│   ├── utils/                 # Helper utilities
+│   │   └── constants.js      # App constants and configs
 │   │
-│   ├── App.jsx              # Main App component
-│   ├── main.jsx             # Entry point
-│   └── index.css            # Global styles
+│   ├── App.jsx                # Root component with routing
+│   ├── main.jsx               # Entry point (ReactDOM.render)
+│   └── index.css              # Global styles & Tailwind imports
 │
-├── .env.example             # Environment variables example
-├── .gitignore               # Git ignore file
-├── index.html               # HTML template
-├── package.json             # Dependencies and scripts
-├── vite.config.js           # Vite configuration
-├── tailwind.config.js       # Tailwind CSS configuration
-├── postcss.config.js        # PostCSS configuration
-├── eslint.config.js         # ESLint configuration
-└── README.md                # Project documentation
+├── .env                       # Environment variables (git ignored)
+├── .env.example               # Example environment file
+├── .gitignore                 # Git ignore rules
+├── index.html                 # HTML entry point
+├── package.json               # Dependencies & scripts
+├── package-lock.json          # Locked dependency versions
+├── vite.config.js             # Vite bundler configuration
+├── tailwind.config.js         # Tailwind CSS configuration
+├── postcss.config.js          # PostCSS configuration
+├── eslint.config.js           # ESLint rules (optional)
+└── README.md                  # Project documentation
 ```
+
+### 📝 Key Files Explanation
+
+| File/Folder | Purpose |
+|------------|---------|
+| `src/pages/` | Main application screens (Startup, Login, Signup, Home, etc.) |
+| `src/components/` | Reusable UI components used across pages |
+| `src/api/tmdb.js` | TMDB API integration and HTTP requests |
+| `src/App.jsx` | Main app component with React Router setup |
+| `src/main.jsx` | Application entry point that renders App |
+| `index.html` | Root HTML file that loads the React app |
+| `vite.config.js` | Vite build tool configuration |
+| `tailwind.config.js` | Tailwind CSS theme customization |
+
+### 🔧 Configuration Files
+
+**vite.config.js** - Configures Vite build process
+**tailwind.config.js** - Customizes Tailwind theme
+**postcss.config.js** - PostCSS plugins for Tailwind
 
 ---
 
@@ -200,7 +202,7 @@ Make sure you have the following installed on your system:
 #### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/cineflex.git
+git clone https://github.com/Jenidevops/cineflex.git
 cd cineflex
 ```
 
@@ -459,10 +461,10 @@ Distributed under the MIT License. See `LICENSE` file for more information.
 
 **Your Name**
 
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
-- Email: your.email@example.com
-- Portfolio: [yourportfolio.com](https://yourportfolio.com)
+- GitHub: [@Jenidevops](https://github.com/Jenidevops)
+
+- Email: jenidevops@gmail.com.com
+
 
 ---
 
