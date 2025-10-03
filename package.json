@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "description": "A Netflix-like streaming platform built with React, Vite, and TMDB API",
+  "homepage": "https://jenidevops.github.io/cineflix",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
