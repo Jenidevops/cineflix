@@ -50,6 +50,19 @@
     <h1>🔍 CineFlix Diagnostic Page</h1>
     <p>This page will help diagnose why your site shows a white page.</p>
 
+    <div class="status-box status-warning">
+        <h2>⚠️ Important Notice</h2>
+        <p><strong>If you see "Environment Variables Missing" below:</strong></p>
+        <ol>
+            <li>Go to <a href="https://vercel.com/dashboard" target="_blank" style="color: #00aaff;">Vercel Dashboard</a></li>
+            <li>Click your <strong>cineflix</strong> project</li>
+            <li>Go to <strong>Settings → Environment Variables</strong></li>
+            <li>Add the 3 required variables (shown below)</li>
+            <li>Go to <strong>Deployments → Redeploy</strong></li>
+            <li>Wait 1-2 minutes, then refresh this page</li>
+        </ol>
+    </div>
+
     <div id="status-container"></div>
 
     <div class="status-box">
@@ -115,12 +128,32 @@ FIX: Add environment variables in Vercel Dashboard:
 
         // Test API connection
         window.testAPI = async function() {
-            const testUrl = `${baseUrl || 'https://api.themoviedb.org/3'}/movie/popular?api_key=${apiKey || 'MISSING'}`;
+            if (!apiKey) {
+                addStatus(
+                    '✗ Cannot Test API',
+                    'TMDB API key is missing! Add environment variables first.',
+                    'bad',
+                    `You need to:
+1. Go to Vercel Dashboard (https://vercel.com/dashboard)
+2. Click Settings → Environment Variables
+3. Add VITE_TMDB_API_KEY with your TMDB API key
+4. Add VITE_TMDB_BASE_URL = https://api.themoviedb.org/3
+5. Add VITE_TMDB_IMAGE_BASE_URL = https://image.tmdb.org/t/p
+6. Click Deployments → Redeploy
+7. Wait 1-2 minutes and refresh this page
+
+Get TMDB API Key: https://www.themoviedb.org/settings/api`
+                );
+                return;
+            }
+
+            const testUrl = `${baseUrl || 'https://api.themoviedb.org/3'}/movie/popular?api_key=${apiKey}`;
             
             addStatus(
                 '🔄 Testing API...',
                 'Attempting to fetch data from TMDB',
-                'warning'
+                'warning',
+                `Testing URL: ${testUrl.replace(apiKey, apiKey.substring(0, 10) + '...')}`
             );
 
             try {
@@ -130,16 +163,25 @@ FIX: Add environment variables in Vercel Dashboard:
                 if (response.ok) {
                     addStatus(
                         '✓ API Test Success',
-                        `Successfully fetched ${data.results?.length || 0} movies`,
+                        `Successfully fetched ${data.results?.length || 0} movies from TMDB!`,
                         'good',
-                        JSON.stringify(data.results?.[0]?.title || 'No data', null, 2)
+                        `First movie: "${data.results?.[0]?.title || 'No data'}"
+Total movies fetched: ${data.results?.length || 0}
+Your TMDB API is working correctly!`
                     );
                 } else {
                     addStatus(
                         '✗ API Test Failed',
                         `HTTP ${response.status}: ${data.status_message || 'Unknown error'}`,
                         'bad',
-                        JSON.stringify(data, null, 2)
+                        `Error Details:
+${JSON.stringify(data, null, 2)}
+
+Common causes:
+- Invalid API key
+- API key not activated yet
+- Rate limit exceeded
+- Network issue`
                     );
                 }
             } catch (error) {
@@ -147,7 +189,13 @@ FIX: Add environment variables in Vercel Dashboard:
                     '✗ API Test Failed',
                     'Network error or API unreachable',
                     'bad',
-                    error.message
+                    `Error: ${error.message}
+
+Possible causes:
+- No internet connection
+- TMDB API is down
+- CORS issue
+- Browser blocking request`
                 );
             }
         };
