@@ -1,6 +1,11 @@
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY
-const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL
-const IMAGE_BASE_URL = import.meta.env.VITE_TMDB_IMAGE_BASE_URL
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY || ''
+const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL || 'https://api.themoviedb.org/3'
+const IMAGE_BASE_URL = import.meta.env.VITE_TMDB_IMAGE_BASE_URL || 'https://image.tmdb.org/t/p'
+
+// Check if API key is configured
+if (!API_KEY) {
+  console.error('⚠️ TMDB API key is not configured. Please add VITE_TMDB_API_KEY to your environment variables.')
+}
 
 export const tmdbApi = {
   // Get popular movies
