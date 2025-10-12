@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineFlix - Diagnostic Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .status-box {
+            background: #2a2a2a;
+            border: 2px solid #444;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .status-good { border-color: #00ff00; }
+        .status-bad { border-color: #ff0000; }
+        .status-warning { border-color: #ffaa00; }
+        h1 { color: #e50914; }
+        h2 { color: #fff; margin-top: 0; }
+        pre {
+            background: #000;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .button {
+            background: #e50914;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .button:hover { background: #c50812; }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        .warning { color: #ffaa00; }
+    </style>
+</head>
+<body>
+    <h1>🔍 CineFlix Diagnostic Page</h1>
+    <p>This page will help diagnose why your site shows a white page.</p>
+
+    <div id="status-container"></div>
+
+    <div class="status-box">
+        <h2>Manual Tests</h2>
+        <button class="button" onclick="testAPI()">Test TMDB API</button>
+        <button class="button" onclick="checkEnvVars()">Check Environment Variables</button>
+        <button class="button" onclick="window.location.href='/'">Go to Main Site</button>
+    </div>
+
+    <script type="module">
+        const statusContainer = document.getElementById('status-container');
+
+        function addStatus(title, message, status, details = '') {
+            const box = document.createElement('div');
+            box.className = `status-box status-${status}`;
+            box.innerHTML = `
+                <h2>${title}</h2>
+                <p>${message}</p>
+                ${details ? `<pre>${details}</pre>` : ''}
+            `;
+            statusContainer.appendChild(box);
+        }
+
+        // Check if running in browser
+        addStatus(
+            '✓ Browser Check',
+            'JavaScript is running successfully',
+            'good'
+        );
+
+        // Check environment variables
+        const apiKey = import.meta.env.VITE_TMDB_API_KEY;
+        const baseUrl = import.meta.env.VITE_TMDB_BASE_URL;
+        const imageUrl = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
+
+        if (apiKey) {
+            addStatus(
+                '✓ Environment Variables Found',
+                'TMDB API key is configured',
+                'good',
+                `API Key: ${apiKey.substring(0, 10)}...
+Base URL: ${baseUrl}
+Image URL: ${imageUrl}`
+            );
+        } else {
+            addStatus(
+                '✗ Environment Variables Missing',
+                'TMDB API key is NOT configured. This is why you see a white page!',
+                'bad',
+                `VITE_TMDB_API_KEY: ${apiKey === undefined ? 'undefined' : 'empty'}
+VITE_TMDB_BASE_URL: ${baseUrl || 'undefined'}
+VITE_TMDB_IMAGE_BASE_URL: ${imageUrl || 'undefined'}
+
+FIX: Add environment variables in Vercel Dashboard:
+1. Go to vercel.com/dashboard
+2. Click Settings → Environment Variables
+3. Add VITE_TMDB_API_KEY with your TMDB API key
+4. Add VITE_TMDB_BASE_URL = https://api.themoviedb.org/3
+5. Add VITE_TMDB_IMAGE_BASE_URL = https://image.tmdb.org/t/p
+6. Click Deployments → Redeploy`
+            );
+        }
+
+        // Test API connection
+        window.testAPI = async function() {
+            const testUrl = `${baseUrl || 'https://api.themoviedb.org/3'}/movie/popular?api_key=${apiKey || 'MISSING'}`;
+            
+            addStatus(
+                '🔄 Testing API...',
+                'Attempting to fetch data from TMDB',
+                'warning'
+            );
+
+            try {
+                const response = await fetch(testUrl);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addStatus(
+                        '✓ API Test Success',
+                        `Successfully fetched ${data.results?.length || 0} movies`,
+                        'good',
+                        JSON.stringify(data.results?.[0]?.title || 'No data', null, 2)
+                    );
+                } else {
+                    addStatus(
+                        '✗ API Test Failed',
+                        `HTTP ${response.status}: ${data.status_message || 'Unknown error'}`,
+                        'bad',
+                        JSON.stringify(data, null, 2)
+                    );
+                }
+            } catch (error) {
+                addStatus(
+                    '✗ API Test Failed',
+                    'Network error or API unreachable',
+                    'bad',
+                    error.message
+                );
+            }
+        };
+
+        window.checkEnvVars = function() {
+            const allEnvVars = import.meta.env;
+            addStatus(
+                'All Environment Variables',
+                'Complete list of available environment variables',
+                'warning',
+                JSON.stringify(allEnvVars, null, 2)
+            );
+        };
+
+        // Auto-test API if key exists
+        if (apiKey) {
+            window.testAPI();
+        }
+
+        // Check if main app loads
+        try {
+            const mainScript = document.querySelector('script[src*="main"]');
+            if (mainScript) {
+                addStatus(
+                    '✓ Main Script Found',
+                    'Main application script is loading',
+                    'good'
+                );
+            }
+        } catch (e) {
+            addStatus(
+                '⚠ Script Check',
+                'Could not verify main script',
+                'warning',
+                e.message
+            );
+        }
+
+        // Summary
+        if (!apiKey) {
+            addStatus(
+                '📋 Summary',
+                'Your site shows white page because environment variables are missing.',
+                'bad',
+                `SOLUTION:
+1. Go to https://vercel.com/dashboard
+2. Click your 'cineflix' project
+3. Go to Settings → Environment Variables
+4. Add these three variables:
+   - VITE_TMDB_API_KEY = [your TMDB API key]
+   - VITE_TMDB_BASE_URL = https://api.themoviedb.org/3
+   - VITE_TMDB_IMAGE_BASE_URL = https://image.tmdb.org/t/p
+5. Go to Deployments tab
+6. Click (...) → Redeploy
+7. Wait 1-2 minutes
+8. Your site will work!
+
+Get TMDB API Key: https://www.themoviedb.org/settings/api`
+            );
+        } else {
+            addStatus(
+                '📋 Summary',
+                'Environment variables are configured. If site still doesn\'t work, check console for errors.',
+                'good',
+                'Open DevTools (F12) → Console tab to see any JavaScript errors'
+            );
+        }
+    </script>
+</body>
+</html>
