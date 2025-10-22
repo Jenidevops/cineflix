@@ -41,6 +41,26 @@
   ],
   "rewrites": [
     {
+      "source": "/api/auth/signup",
+      "destination": "/api/auth/signup"
+    },
+    {
+      "source": "/api/auth/login",
+      "destination": "/api/auth/login"
+    },
+    {
+      "source": "/api/auth/logout",
+      "destination": "/api/auth/logout"
+    },
+    {
+      "source": "/api/subscription/plans",
+      "destination": "/api/subscription/plans"
+    },
+    {
+      "source": "/api/subscription/subscribe",
+      "destination": "/api/subscription/subscribe"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

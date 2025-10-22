@@ -5,7 +5,8 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import heroimage from '../images/heroimage.png' 
 
-const API_URL = 'http://localhost:5001/api'
+// Use relative URL for Vercel, or localhost for local development
+const API_URL = import.meta.env.PROD ? '/api' : 'http://localhost:5001/api'
 
 export default function SignUp({ setIsAuthenticated }) {
   const location = useLocation()

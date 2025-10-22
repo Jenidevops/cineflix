@@ -3,7 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { CreditCard, Smartphone, Check } from 'lucide-react';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5001/api';
+// Use relative URL for Vercel, or localhost for local development
+const API_URL = import.meta.env.PROD ? '/api' : 'http://localhost:5001/api';
 
 export default function SubscriptionPlans() {
   const navigate = useNavigate();
