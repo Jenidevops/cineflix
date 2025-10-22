@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Bell, ChevronDown, User, Settings, LogOut, Heart } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 
-export default function Navbar({ showLinks = true, onNavClick, searchComponent }) {
+export default function Navbar({ showLinks = true, onNavClick, searchComponent, handleLogout }) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
   const [favoritesCount, setFavoritesCount] = useState(0)
@@ -42,7 +42,7 @@ export default function Navbar({ showLinks = true, onNavClick, searchComponent }
       <div className="flex items-center justify-between px-4 md:px-12 py-1">
         {/* Left Section */}
         <div className="flex items-center space-x-8">
-          <Link to="/" onClick={() => onNavClick && onNavClick('Home')}>
+          <Link to={showLinks ? "/browse" : "/"} onClick={() => onNavClick && onNavClick('Home')}>
             <h1 className="logo">CineFlix</h1>
           </Link>
 
@@ -117,7 +117,27 @@ export default function Navbar({ showLinks = true, onNavClick, searchComponent }
                       <Settings size={16} />
                       <span>Settings</span>
                     </li>
-                    <li className="px-4 py-2 hover:bg-gray-700 flex items-center space-x-2 cursor-pointer" onClick={() => navigate('/signup')}>
+                    <li 
+                      className="px-4 py-2 hover:bg-gray-700 flex items-center space-x-2 cursor-pointer" 
+                      onClick={() => {
+                        // Clear localStorage first
+                        localStorage.removeItem('isAuthenticated')
+                        localStorage.removeItem('user')
+                        localStorage.removeItem('cineflix_favorites')
+                        localStorage.removeItem('cineflix_continue_watching')
+                        
+                        // Call parent logout handler if available
+                        if (handleLogout) {
+                          handleLogout()
+                        }
+                        
+                        // Navigate to login
+                        navigate('/login')
+                        
+                        // Force page reload to clear all state
+                        window.location.href = '/login'
+                      }}
+                    >
                       <LogOut size={16} />
                       <span>Sign Out</span>
                     </li>
@@ -127,7 +147,7 @@ export default function Navbar({ showLinks = true, onNavClick, searchComponent }
             </>
           ) : (
             <button 
-              onClick={() => navigate('/signup')}
+              onClick={() => navigate('/login')}
               className="bg-cineflix text-white px-4 py-2 rounded font-semibold hover:bg-red-700 transition"
             >
               Sign In

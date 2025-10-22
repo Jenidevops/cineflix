@@ -13,7 +13,7 @@ import { categories, heroContent } from '../data/mockData'
 import { tmdbApi } from '../services/tmdbApi'
 import { favoritesManager } from '../utils/favoritesManager'
 
-export default function Browse() {
+export default function Browse({ handleLogout }) {
   const [selectedContent, setSelectedContent] = useState(null)
   const [myList, setMyList] = useState([])
   const [currentHeroContent, setCurrentHeroContent] = useState(heroContent)
@@ -217,6 +217,7 @@ export default function Browse() {
         showLinks={true} 
         onNavClick={handleNavClick}
         searchComponent={<SearchBar onSearch={handleSearch} onClear={handleClearSearch} />}
+        handleLogout={handleLogout}
       />
       
       {!showSearch && <Hero content={currentHeroContent} />}

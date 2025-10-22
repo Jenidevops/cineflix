@@ -7,7 +7,7 @@ import { favoritesManager } from '../utils/favoritesManager'
 import { tmdbApi } from '../services/tmdbApi'
 import { Play, X, Info } from 'lucide-react'
 
-export default function Favorites() {
+export default function Favorites({ handleLogout }) {
   const [favorites, setFavorites] = useState([])
   const [selectedMovie, setSelectedMovie] = useState(null)
   const navigate = useNavigate()
@@ -74,7 +74,7 @@ export default function Favorites() {
 
   return (
     <div className="bg-black text-white min-h-screen">
-      <Navbar showLinks={true} />
+      <Navbar showLinks={true} handleLogout={handleLogout} />
       
       <div className="pt-24 px-4 md:px-12 pb-20">
         <h1 className="text-4xl font-bold mb-8">My Favorites</h1>

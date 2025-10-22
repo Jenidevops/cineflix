@@ -1,31 +1,74 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import GetStarted from './pages/GetStarted'
 import SignUp from './pages/SignUp'
+import Login from './pages/Login'
+import SubscriptionPlans from './pages/SubscriptionPlans'
 import Browse from './pages/Browse'
 import Favorites from './pages/Favorites'
-import { useState } from 'react'
 
 function App() {
-  // Temporarily set to true to bypass authentication for testing
-  const [isAuthenticated, setIsAuthenticated] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    // Check if user is logged in
+    const authStatus = localStorage.getItem('isAuthenticated')
+    const userData = localStorage.getItem('user')
+    
+    if (authStatus === 'true' && userData) {
+      setIsAuthenticated(true)
+      setUser(JSON.parse(userData))
+    }
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated')
+    localStorage.removeItem('user')
+    setIsAuthenticated(false)
+    setUser(null)
+  }
+
+  // Protected route component
+  const ProtectedRoute = ({ children }) => {
+    if (!isAuthenticated) {
+      return <Navigate to="/login" replace />
+    }
+    return children
+  }
 
   return (
-    <Router basename="/cineflix">
+    <Router>
       <Routes>
         <Route path="/" element={<GetStarted />} />
         <Route path="/signup" element={<SignUp setIsAuthenticated={setIsAuthenticated} />} />
+        <Route path="/login" element={<Login />} />
+        <Route 
+          path="/subscription" 
+          element={
+            <ProtectedRoute>
+              <SubscriptionPlans />
+            </ProtectedRoute>
+          } 
+        />
         <Route 
           path="/browse" 
           element={
-            isAuthenticated ? <Browse /> : <Navigate to="/signup" replace />
+            <ProtectedRoute>
+              <Browse handleLogout={handleLogout} />
+            </ProtectedRoute>
           } 
         />
         <Route 
           path="/favorites" 
           element={
-            isAuthenticated ? <Favorites /> : <Navigate to="/signup" replace />
+            <ProtectedRoute>
+              <Favorites handleLogout={handleLogout} />
+            </ProtectedRoute>
           } 
         />
+        {/* Redirect any unknown routes to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   )

@@ -102,6 +102,10 @@ temp/
 .out
 .storybook-out
 
-# Temporary folders
-tmp/
-temp/
+# Documentation (keep README.md only)
+SETUP_GUIDE.md
+PROJECT_OVERVIEW.md
+QUICK_START.md
+ARCHITECTURE.md
+USER_FLOWS_EXPLAINED.md
+TROUBLESHOOTING.md

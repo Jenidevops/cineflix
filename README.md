@@ -1,187 +1,466 @@
-# 🎬 CineFlix
+# 🎬 CineFlix - Full Stack Streaming Platform
 
-A modern, secure Netflix-like streaming platform built with React, Vite, and TMDB API.
+A modern Netflix-inspired streaming platform with full-stack authentication, subscription management, and movie browsing capabilities. Built for educational purposes with React, Node.js/Express, and TMDB API.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Jenidevops/cineflix)
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [Tech Stack](#️-tech-stack)
+- [Project Structure](#-project-structure)
+- [Quick Start](#-quick-start)
+- [Environment Setup](#-environment-setup)
+- [Authentication System](#-authentication-system)
+- [Subscription Plans](#-subscription-plans)
+- [API Documentation](#-api-documentation)
+- [Deployment](#-deployment)
+- [Troubleshooting](#-troubleshooting)
 
 ## ✨ Features
 
+### Frontend Features
 - 🎥 Browse popular, trending, and top-rated movies
-- 🔍 Advanced search functionality
-- ⭐ Favorites management
-- 📱 Fully responsive design
-- 🎨 Modern UI with Tailwind CSS
-- 🔒 Secure with comprehensive security headers
-- ⚡ Fast performance with Vite
-- 🎯 SEO optimized
+- 🔍 Real-time movie search with TMDB API
+- 🎬 Movie details with trailers and reviews
+- ⭐ Favorites management with localStorage
+- 📺 Continue watching functionality
+- 📱 Fully responsive design (mobile, tablet, desktop)
+- 🎨 Netflix-inspired UI/UX
 
-## 🔒 Security Features
-
-This project implements industry-standard security practices:
-
-- ✅ Content Security Policy (CSP)
-- ✅ X-Frame-Options protection
-- ✅ X-Content-Type-Options (nosniff)
-- ✅ XSS Protection
-- ✅ Referrer Policy
-- ✅ Permissions Policy
-- ✅ HSTS (Strict-Transport-Security)
-- ✅ Secure environment variable handling
-- ✅ Regular dependency updates
-
-See [SECURITY.md](./SECURITY.md) for more details.
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Node.js 16+ and npm
-- TMDB API key ([Get one here](https://www.themoviedb.org/settings/api))
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Jenidevops/cineflix.git
-   cd cineflix
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Create a `.env` file based on `.env.example`:
-   ```bash
-   cp .env.example .env
-   ```
-
-4. Add your TMDB API key to `.env`:
-   ```
-   VITE_TMDB_API_KEY=your_api_key_here
-   VITE_TMDB_BASE_URL=https://api.themoviedb.org/3
-   VITE_TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p
-   ```
-
-5. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-6. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-## 📦 Build
-
-To create a production build:
-
-```bash
-npm run build
-```
-
-To preview the production build locally:
-
-```bash
-npm run preview
-```
-
-## 🌐 Deployment
-
-### Deploy to Vercel (Recommended)
-
-The easiest way to deploy CineFlix is using Vercel:
-
-1. Click the "Deploy with Vercel" button above, or
-2. Follow the detailed guide in [DEPLOYMENT.md](./DEPLOYMENT.md)
-
-**Important**: Don't forget to add your environment variables in Vercel!
-
-### Deploy to Other Platforms
-
-This project can also be deployed to:
-- Netlify
-- GitHub Pages
-- Railway
-- Any static hosting service
+### Backend Features
+- 🔐 User authentication (signup/login/logout)
+- 💳 Subscription management with 3 tier plans
+- 💰 Mock payment processing (Credit Card, PayPal, UPI)
+- 🛡️ Protected routes and session management
+- 📊 In-memory database (educational purpose)
+- 🔒 Input validation and error handling
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React 18, React Router
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS
-- **Icons**: Lucide React
-- **API**: TMDB (The Movie Database)
-- **Deployment**: Vercel
+### Frontend
+- **React 18.3.1** - UI library
+- **Vite 7.1.9** - Build tool and dev server
+- **React Router 6.26.0** - Client-side routing
+- **Axios 1.12.2** - HTTP client for API calls
+- **Tailwind CSS 3.4.11** - Utility-first CSS framework
+- **TMDB API** - Movie database and content
+
+### Backend
+- **Node.js** - JavaScript runtime
+- **Express 5.1.0** - Web application framework
+- **CORS** - Cross-origin resource sharing
+- **ES Modules** - Modern JavaScript module system
+
+### Development Tools
+- **Concurrently 9.2.1** - Run multiple commands simultaneously
+- **ESLint** - Code linting
+- **PostCSS** - CSS processing
 
 ## 📁 Project Structure
 
 ```
 cineflix/
-├── src/
-│   ├── components/     # Reusable components
-│   ├── pages/          # Page components
-│   ├── services/       # API services
-│   ├── utils/          # Utility functions
-│   ├── data/           # Mock data
-│   └── images/         # Static images
-├── public/             # Public assets
-├── vercel.json         # Vercel configuration
-├── vite.config.js      # Vite configuration
-└── tailwind.config.js  # Tailwind configuration
+├── backend/                    # Backend server
+│   ├── server.js              # Express server entry point
+│   ├── models/                # Data models
+│   │   ├── users.js          # User database & operations
+│   │   └── subscriptionPlans.js  # Subscription plans
+│   └── routes/                # API routes
+│       ├── auth.js           # Authentication endpoints
+│       └── subscription.js   # Subscription endpoints
+├── src/                       # Frontend source
+│   ├── App.jsx               # Main app with routing
+│   ├── main.jsx              # React entry point
+│   ├── index.css             # Global styles
+│   ├── components/           # Reusable components
+│   │   ├── Navbar.jsx       # Navigation bar
+│   │   ├── Footer.jsx       # Footer component
+│   │   ├── MovieCard.jsx    # Movie display card
+│   │   ├── Hero.jsx         # Hero section
+│   │   ├── Modal.jsx        # Modal component
+│   │   ├── ProtectedRoute.jsx  # Route protection
+│   │   └── ...              # Other components
+│   ├── pages/               # Page components
+│   │   ├── GetStarted.jsx   # Landing page
+│   │   ├── Login.jsx        # Login page
+│   │   ├── SignUp.jsx       # Registration page
+│   │   ├── SubscriptionPlans.jsx  # Plan selection
+│   │   ├── Browse.jsx       # Main browse page
+│   │   └── Favorites.jsx    # User favorites
+│   ├── services/            # API services
+│   │   └── tmdbApi.js       # TMDB API integration
+│   └── utils/               # Utility functions
+│       ├── favoritesManager.js      # Favorites logic
+│       └── continueWatchingManager.js  # Watch history
+├── public/                  # Static assets
+├── package.json            # Dependencies & scripts
+├── vite.config.js         # Vite configuration
+├── tailwind.config.js     # Tailwind configuration
+└── vercel.json            # Vercel deployment config
 ```
 
-## 🔐 Environment Variables
+## 🚀 Quick Start
 
-Required environment variables:
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
+- TMDB API key (optional for movie browsing)
 
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone <your-repo-url>
+   cd cineflix
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start both servers:**
+   ```bash
+   npm start
+   ```
+   This runs both frontend (port 3000) and backend (port 5001) concurrently.
+
+4. **Access the application:**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:5001
+
+### Individual Server Commands
+
+```bash
+# Run backend only
+npm run server
+
+# Run frontend only
+npm run dev
+
+# Run both (recommended)
+npm start
 ```
-VITE_TMDB_API_KEY=your_tmdb_api_key
+
+## 🔧 Environment Setup
+
+### Optional: TMDB API (for real movie data)
+
+Create a `.env` file in the root directory:
+
+```env
+VITE_TMDB_API_KEY=your_api_key_here
 VITE_TMDB_BASE_URL=https://api.themoviedb.org/3
 VITE_TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p
 ```
 
-**Never commit your `.env` file!** Use `.env.example` as a template.
+Get your API key from: https://www.themoviedb.org/settings/api
 
-## 🤝 Contributing
+## 🔐 Authentication System
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+### Demo Credentials
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+**User with Active Subscription:**
+- Email: `demo@cineflix.com`
+- Password: `Demo@2024!Secure`
+- Status: Can access browse page directly
+
+**User without Subscription:**
+- Email: `test@test.com`
+- Password: `Test@2024!Pass`
+- Status: Redirected to subscription page
+
+### User Flow
+
+1. **New User:**
+   - Visit landing page (/)
+   - Click "Get Started"
+   - Sign up with email/password
+   - Redirected to subscription plans
+   - Choose plan and payment method
+   - Access browse page
+
+2. **Existing User:**
+   - Click "Sign In"
+   - Enter credentials
+   - Automatic redirect based on subscription status
+   - Browse movies if subscribed
+
+3. **Session Management:**
+   - User data stored in localStorage
+   - Automatic logout clears all data
+   - Protected routes check authentication
+
+## 💳 Subscription Plans
+
+### Available Plans
+
+| Plan | Price | Features |
+|------|-------|----------|
+| **Basic** | $6.99/month | HD quality, Watch on 1 device, Limited content |
+| **Standard** | $12.99/month | Full HD quality, Watch on 2 devices, Full catalog |
+| **Premium** | $19.99/month | 4K + HDR, Watch on 4 devices, Premium content |
+
+### Payment Methods (Mock)
+
+- **Credit Card** - Simulated card processing
+- **PayPal** - Mock PayPal integration
+- **UPI** - Mock UPI payment
+
+**Note:** All payments are mocked for educational purposes. No real transactions occur.
+
+## 📡 API Documentation
+
+### Base URL
+```
+http://localhost:5001/api
+```
+
+### Authentication Endpoints
+
+#### POST `/auth/signup`
+Create a new user account.
+
+**Request:**
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "SecurePass123!"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "User created successfully",
+  "user": {
+    "id": 3,
+    "name": "John Doe",
+    "email": "john@example.com"
+  }
+}
+```
+
+#### POST `/auth/login`
+Authenticate user and get session data.
+
+**Request:**
+```json
+{
+  "email": "demo@cineflix.com",
+  "password": "Demo@2024!Secure"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "user": {
+    "id": 1,
+    "name": "Demo User",
+    "email": "demo@cineflix.com",
+    "subscription": {
+      "planId": 2,
+      "planName": "Standard",
+      "status": "active",
+      "startDate": "2024-01-01",
+      "paymentMethod": "credit-card"
+    }
+  }
+}
+```
+
+#### POST `/auth/logout`
+End user session.
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Logged out successfully"
+}
+```
+
+### Subscription Endpoints
+
+#### GET `/subscription/plans`
+Get all available subscription plans.
+
+**Response:**
+```json
+{
+  "success": true,
+  "plans": [
+    {
+      "id": 1,
+      "name": "Basic",
+      "price": 6.99,
+      "features": ["HD", "1 device", "Limited content"]
+    }
+  ]
+}
+```
+
+#### POST `/subscription/subscribe`
+Subscribe user to a plan.
+
+**Request:**
+```json
+{
+  "userId": 1,
+  "planId": 2,
+  "paymentMethod": "credit-card",
+  "paymentDetails": {
+    "cardNumber": "4111111111111111",
+    "expiryDate": "12/25",
+    "cvv": "123"
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Subscription activated successfully",
+  "subscription": {
+    "planId": 2,
+    "planName": "Standard",
+    "status": "active"
+  }
+}
+```
+
+## 🌐 Deployment
+
+### Deploy to Vercel
+
+#### Option 1: Vercel CLI
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel
+
+# Follow prompts and add environment variables
+```
+
+#### Option 2: Vercel Dashboard
+1. Push code to GitHub
+2. Go to https://vercel.com/new
+3. Import your repository
+4. Add environment variables (if using TMDB):
+   - `VITE_TMDB_API_KEY`
+   - `VITE_TMDB_BASE_URL`
+   - `VITE_TMDB_IMAGE_BASE_URL`
+5. Deploy!
+
+**Note:** Current backend uses in-memory storage. For production, migrate to a real database (MongoDB, PostgreSQL, etc.).
+
+### Production Considerations
+
+For a production deployment, you'll need to:
+1. Replace in-memory database with persistent storage
+2. Add real authentication with JWT/sessions
+3. Implement real payment processing (Stripe, PayPal API)
+4. Add environment-based configuration
+5. Set up proper CORS policies
+6. Add rate limiting and security headers
+7. Deploy backend separately (Heroku, Railway, etc.)
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+**1. Servers not starting**
+```bash
+# Kill processes on ports
+lsof -ti:5001 | xargs kill -9
+lsof -ti:3000 | xargs kill -9
+
+# Restart
+npm start
+```
+
+**2. Login form not clickable (large screens)**
+- Clear browser cache (Cmd+Shift+R on Mac)
+- Ensure latest code is pulled
+- Check z-index fix is applied in Login.jsx
+
+**3. Chrome password breach warning**
+- Demo passwords are intentionally complex to avoid this
+- Use provided credentials or create new strong passwords
+
+**4. Cannot access browse page**
+- Ensure you're logged in with a user that has an active subscription
+- Use `demo@cineflix.com` / `Demo@2024!Secure` for testing
+
+**5. Movies not loading**
+- Add TMDB API key to `.env` file
+- Check internet connection
+- Verify TMDB API key is valid
+
+**6. Backend API errors**
+```bash
+# Check backend is running
+curl http://localhost:5001/
+
+# Should return: "CineFlix Backend API is running!"
+```
+
+### Reset Application State
+
+```bash
+# Clear all localStorage (in browser console)
+localStorage.clear()
+
+# Restart servers (will reset in-memory database)
+npm start
+```
+
+## 📝 Development Notes
+
+### Educational Purpose
+This project is built for **learning purposes** and demonstrates:
+- Full-stack application architecture
+- React component design patterns
+- Express REST API development
+- Authentication flows
+- Subscription management
+- Mock payment integration
+
+### Not Production-Ready
+Current limitations:
+- In-memory database (data lost on restart)
+- localStorage authentication (not secure)
+- Mock payments (no real transactions)
+- No data persistence
+- No advanced security measures
+
+### Future Enhancements
+- Real database (MongoDB/PostgreSQL)
+- JWT authentication
+- Real payment gateway integration
+- User profile management
+- Watchlist and recommendations
+- Admin dashboard
+- Email verification
+- Password reset functionality
 
 ## 📄 License
 
-This project is open source and available under the MIT License.
+MIT License - Feel free to use this project for learning!
 
-## 🙏 Acknowledgments
+## 🤝 Contributing
 
-- [TMDB](https://www.themoviedb.org/) for providing the movie database API
-- [Vercel](https://vercel.com) for hosting
-- The React and Vite communities
-
-## 📞 Support
-
-For support, please:
-- Check the [DEPLOYMENT.md](./DEPLOYMENT.md) guide
-- Review [SECURITY.md](./SECURITY.md) for security issues
-- Open an issue on GitHub
-
-## 🔄 Updates
-
-To keep your dependencies secure and up-to-date:
-
-```bash
-npm audit
-npm audit fix
-npm update
-```
+This is an educational project. Feel free to fork and experiment!
 
 ---
 
-Made with ❤️ by [Jenidevops](https://github.com/Jenidevops)
+**Made with ❤️ for learning full-stack development**
 
-## License
-
-MIT License
+For questions or issues, please check the troubleshooting section above.
