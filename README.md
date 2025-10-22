@@ -2,6 +2,8 @@
 
 A modern Netflix-inspired streaming platform with full-stack authentication, subscription management, and movie browsing capabilities. Built for educational purposes with React, Node.js/Express, and TMDB API.
 
+> **🚀 Deployment Status:** Currently configured for local development. Backend and frontend run together on localhost. Vercel deployment setup available but not activated.
+
 ## 📋 Table of Contents
 
 - [Features](#-features)
@@ -336,41 +338,50 @@ Subscribe user to a plan.
 
 ## 🌐 Deployment
 
-### Deploy to Vercel
+### Current Status: Local Development Only
 
-#### Option 1: Vercel CLI
+This project is currently configured to run **locally** with both frontend and backend servers:
+
+- **Frontend:** http://localhost:3000 (React + Vite)
+- **Backend:** http://localhost:5001 (Express API)
+
+To run the full application:
 ```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel
-
-# Follow prompts and add environment variables
+npm start
 ```
 
-#### Option 2: Vercel Dashboard
-1. Push code to GitHub
-2. Go to https://vercel.com/new
-3. Import your repository
-4. Add environment variables (if using TMDB):
-   - `VITE_TMDB_API_KEY`
-   - `VITE_TMDB_BASE_URL`
-   - `VITE_TMDB_IMAGE_BASE_URL`
-5. Deploy!
+### Future Deployment Options
 
-**Note:** Current backend uses in-memory storage. For production, migrate to a real database (MongoDB, PostgreSQL, etc.).
+When you're ready to deploy to production, you have these options:
 
-### Production Considerations
+#### Option 1: Frontend on Vercel + Backend on Railway/Render
 
-For a production deployment, you'll need to:
-1. Replace in-memory database with persistent storage
+**Frontend (Vercel):**
+1. The `vercel.json` configuration is already set up
+2. Simply connect your GitHub repository to Vercel
+3. Add TMDB environment variables if needed
+
+**Backend (Railway/Render):**
+1. Deploy Express backend separately
+2. Update frontend API URL to point to deployed backend
+3. Add persistent database (MongoDB, PostgreSQL)
+
+#### Option 2: Full-Stack on Single Platform
+- Use platforms like Heroku, Railway, or Render that support both frontend and backend
+- Configure monorepo deployment
+
+**Note:** Current setup uses in-memory storage and is perfect for learning and local development. For production deployment, you'll need to migrate to a real database.
+
+### Production Considerations (For Future Deployment)
+
+When ready to deploy, you'll need to:
+1. Replace in-memory database with persistent storage (MongoDB, PostgreSQL)
 2. Add real authentication with JWT/sessions
 3. Implement real payment processing (Stripe, PayPal API)
 4. Add environment-based configuration
-5. Set up proper CORS policies
+5. Set up proper CORS policies for production domains
 6. Add rate limiting and security headers
-7. Deploy backend separately (Heroku, Railway, etc.)
+7. Update API URLs from localhost to production URLs
 
 ## 🔍 Troubleshooting
 
