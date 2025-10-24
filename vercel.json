@@ -1,23 +1,13 @@
 {
-  "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "vite",
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "nodejs20.x"
-    }
-  },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
@@ -53,12 +43,6 @@
           "value": "max-age=31536000; includeSubDomains"
         }
       ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/((?!api).*)",
-      "destination": "/index.html"
     }
   ],
   "redirects": [
