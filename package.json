@@ -7,6 +7,7 @@
   "homepage": "https://cineflix.vercel.app",
   "scripts": {
     "dev": "vite",
+    "dev:vercel": "vercel dev",
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "vercel --prod",
@@ -33,6 +34,7 @@
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.11",
     "terser": "^5.44.0",
+    "vercel": "^48.6.0",
     "vite": "^7.1.9"
   }
 }
