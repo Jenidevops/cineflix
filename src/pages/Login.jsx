@@ -4,9 +4,8 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import heroimage from '../images/heroimage.png';
-
-// Use relative URL for Vercel, or localhost for local development
-const API_URL = import.meta.env.PROD ? '/api' : 'http://localhost:5001/api';
+import { API_URL } from '../config/api';
+import { AuthManager } from '../utils/authManager';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -66,9 +65,8 @@ export default function Login() {
       const response = await axios.post(`${API_URL}/auth/login`, formData);
       
       if (response.data.success) {
-        // Store user data
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        localStorage.setItem('isAuthenticated', 'true');
+        // Save session using AuthManager
+        AuthManager.saveSession(response.data.user);
         
         // Check if user has subscription
         if (response.data.user.subscription && response.data.user.subscription.status === 'active') {
@@ -83,7 +81,7 @@ export default function Login() {
       console.error('Login error:', err);
       if (err.response?.status === 401) {
         setErrors({ 
-          general: 'Incorrect email or password. Please try again or you can use demo@cineflix.com / demo123' 
+          general: 'Incorrect email or password. Please try again or you can use demo@cineflix.com / Demo@2024!Secure' 
         });
       } else {
         setErrors({ 

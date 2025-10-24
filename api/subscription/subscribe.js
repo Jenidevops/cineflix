@@ -1,33 +1,36 @@
-import { getPlanById } from '../../backend/models/subscriptionPlans.js';
-import { updateUserSubscription } from '../../backend/models/users.js';
+// Vercel Serverless Function: Subscribe to Plan
+import { findUserById, updateUserSubscription } from '../../../lib/users.js';
+import { getPlanById } from '../../../lib/subscriptionPlans.js';
 
-// Mock payment processing function
-function mockPaymentProcessing(paymentMethod, paymentDetails) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Simulate payment processing
-      resolve({
-        success: true,
-        transactionId: `TXN${Date.now()}`,
-        message: `Payment processed successfully via ${paymentMethod}`
-      });
-    }, 1000);
-  });
-}
+// Mock payment processing
+const mockPaymentProcessing = async (paymentMethod, paymentDetails) => {
+  // Simulate payment processing delay
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  // In production, integrate with Stripe, PayPal, etc.
+  return {
+    success: true,
+    transactionId: `TXN-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+  };
+};
 
 export default async function handler(req, res) {
   // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept');
-
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
+  // Handle preflight
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
-
+  
+  // Only accept POST
   if (req.method !== 'POST') {
-    return res.status(405).json({ success: false, message: 'Method not allowed' });
+    return res.status(405).json({ 
+      success: false, 
+      message: 'Method not allowed' 
+    });
   }
 
   try {
@@ -35,33 +38,42 @@ export default async function handler(req, res) {
 
     // Validation
     if (!userId || !planId || !paymentMethod) {
-      return res.status(400).json({
-        success: false,
-        message: 'User ID, Plan ID, and Payment Method are required'
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Missing required fields' 
       });
     }
 
-    // Get plan details
+    // Verify user exists
+    const user = findUserById(userId);
+    if (!user) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'User not found' 
+      });
+    }
+
+    // Verify plan exists
     const plan = getPlanById(planId);
     if (!plan) {
-      return res.status(404).json({
-        success: false,
-        message: 'Invalid plan ID'
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Plan not found' 
       });
     }
 
-    // Process payment (mock)
+    // Process mock payment
     const paymentResult = await mockPaymentProcessing(paymentMethod, paymentDetails);
 
     if (!paymentResult.success) {
-      return res.status(400).json({
-        success: false,
-        message: 'Payment processing failed'
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Payment processing failed' 
       });
     }
 
-    // Update user subscription
-    const subscription = {
+    // Create subscription data
+    const subscriptionData = {
       planId: plan.id,
       planName: plan.name,
       status: 'active',
@@ -70,25 +82,24 @@ export default async function handler(req, res) {
       transactionId: paymentResult.transactionId
     };
 
-    const updatedUser = updateUserSubscription(userId, subscription);
+    // Update user subscription
+    const updatedUser = updateUserSubscription(userId, subscriptionData);
 
-    if (!updatedUser) {
-      return res.status(404).json({
-        success: false,
-        message: 'User not found'
-      });
-    }
+    // Remove password from response
+    const { password: _, ...userWithoutPassword } = updatedUser;
 
     return res.status(200).json({
       success: true,
       message: 'Subscription activated successfully',
-      subscription: updatedUser.subscription
+      user: userWithoutPassword,
+      subscription: subscriptionData
     });
+
   } catch (error) {
     console.error('Subscribe error:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Server error during subscription'
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Internal server error' 
     });
   }
 }

@@ -1,18 +1,23 @@
-import { findUserByEmail, addUser } from '../../backend/models/users.js';
+// Vercel Serverless Function: Signup
+import { findUserByEmail, addUser } from '../../../lib/users.js';
 
 export default async function handler(req, res) {
   // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept');
-
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
+  // Handle preflight
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
-
+  
+  // Only accept POST
   if (req.method !== 'POST') {
-    return res.status(405).json({ success: false, message: 'Method not allowed' });
+    return res.status(405).json({ 
+      success: false, 
+      message: 'Method not allowed' 
+    });
   }
 
   try {
@@ -20,45 +25,59 @@ export default async function handler(req, res) {
 
     // Validation
     if (!name || !email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: 'All fields are required'
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Name, email, and password are required' 
       });
     }
 
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Invalid email format' 
+      });
+    }
+
+    // Password strength validation
     if (password.length < 6) {
-      return res.status(400).json({
-        success: false,
-        message: 'Password must be at least 6 characters'
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Password must be at least 6 characters' 
       });
     }
 
-    // Check if user exists
+    // Check if user already exists
     const existingUser = findUserByEmail(email);
     if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: 'User with this email already exists'
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Email already registered' 
       });
     }
 
     // Create new user
-    const newUser = addUser({ name, email, password });
+    const newUser = addUser({
+      name,
+      email,
+      password // In production, hash this with bcrypt
+    });
+
+    // Remove password from response
+    const { password: _, ...userWithoutPassword } = newUser;
 
     return res.status(201).json({
       success: true,
       message: 'User created successfully',
-      user: {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email
-      }
+      user: userWithoutPassword
     });
+
   } catch (error) {
     console.error('Signup error:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Server error during signup'
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Internal server error' 
     });
   }
 }

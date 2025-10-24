@@ -3,10 +3,9 @@ import { useNavigate, useLocation, Link } from 'react-router-dom'
 import axios from 'axios'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import heroimage from '../images/heroimage.png' 
-
-// Use relative URL for Vercel, or localhost for local development
-const API_URL = import.meta.env.PROD ? '/api' : 'http://localhost:5001/api'
+import heroimage from '../images/heroimage.png'
+import { API_URL } from '../config/api'
+import { AuthManager } from '../utils/authManager'
 
 export default function SignUp({ setIsAuthenticated }) {
   const location = useLocation()
@@ -67,16 +66,15 @@ export default function SignUp({ setIsAuthenticated }) {
       const response = await axios.post(`${API_URL}/auth/signup`, formData)
       
       if (response.data.success) {
-        // Store user data
-        localStorage.setItem('user', JSON.stringify(response.data.user))
-        localStorage.setItem('isAuthenticated', 'true')
+        // Save session using AuthManager
+        AuthManager.saveSession(response.data.user)
         
         // Navigate to subscription page
         navigate('/subscription', { state: { user: response.data.user } })
       }
     } catch (err) {
       console.error('Signup error:', err)
-      if (err.response?.status === 409) {
+      if (err.response?.status === 400 && err.response?.data?.message?.includes('already registered')) {
         setErrors({ 
           general: 'This email is already registered. Please sign in instead.' 
         })

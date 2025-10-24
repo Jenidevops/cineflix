@@ -6,25 +6,25 @@ import Login from './pages/Login'
 import SubscriptionPlans from './pages/SubscriptionPlans'
 import Browse from './pages/Browse'
 import Favorites from './pages/Favorites'
+import { AuthManager } from './utils/authManager'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    // Check if user is logged in
-    const authStatus = localStorage.getItem('isAuthenticated')
-    const userData = localStorage.getItem('user')
+    // Check authentication using AuthManager
+    const authenticated = AuthManager.isAuthenticated()
+    const userData = AuthManager.getUser()
     
-    if (authStatus === 'true' && userData) {
+    if (authenticated && userData) {
       setIsAuthenticated(true)
-      setUser(JSON.parse(userData))
+      setUser(userData)
     }
   }, [])
 
   const handleLogout = () => {
-    localStorage.removeItem('isAuthenticated')
-    localStorage.removeItem('user')
+    AuthManager.clearSession()
     setIsAuthenticated(false)
     setUser(null)
   }

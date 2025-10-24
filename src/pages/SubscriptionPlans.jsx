@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { CreditCard, Smartphone, Check } from 'lucide-react';
 import axios from 'axios';
-
-// Use relative URL for Vercel, or localhost for local development
-const API_URL = import.meta.env.PROD ? '/api' : 'http://localhost:5001/api';
+import { API_URL } from '../config/api';
+import { AuthManager } from '../utils/authManager';
 
 export default function SubscriptionPlans() {
   const navigate = useNavigate();
@@ -16,8 +15,8 @@ export default function SubscriptionPlans() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
-  // Get user data from location state
-  const userData = location.state?.user;
+  // Get user data from AuthManager or location state
+  const userData = location.state?.user || AuthManager.getUser();
 
   const [paymentDetails, setPaymentDetails] = useState({
     cardNumber: '',
@@ -87,12 +86,12 @@ export default function SubscriptionPlans() {
       });
 
       if (response.data.success) {
-        // Store subscription info
+        // Update user with subscription using AuthManager
         const updatedUser = {
           ...userData,
           subscription: response.data.subscription
         };
-        localStorage.setItem('user', JSON.stringify(updatedUser));
+        AuthManager.updateUser(updatedUser);
         
         // Navigate to browse page
         alert('Subscription successful! Welcome to CineFlix!');
