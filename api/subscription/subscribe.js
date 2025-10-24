@@ -1,6 +1,52 @@
 // Vercel Serverless Function: Subscribe to Plan
-import { findUserById, updateUserSubscription } from '../../../lib/users.js';
-import { getPlanById } from '../../../lib/subscriptionPlans.js';
+
+// Mock user database (inline for serverless compatibility)
+const users = [
+  {
+    id: 1,
+    email: 'demo@cineflix.com',
+    password: 'Demo@2024!Secure',
+    name: 'Demo User',
+    subscription: {
+      planId: 3,
+      planName: 'Premium',
+      status: 'active',
+      startDate: new Date().toISOString(),
+      paymentMethod: 'credit-card'
+    }
+  },
+  {
+    id: 2,
+    email: 'test@test.com',
+    password: 'Test@2024!Pass',
+    name: 'Test User',
+    subscription: null
+  }
+];
+
+// Subscription plans (inline)
+const subscriptionPlans = [
+  { id: 1, name: 'Basic', price: 6.99 },
+  { id: 2, name: 'Standard', price: 12.99 },
+  { id: 3, name: 'Premium', price: 19.99 }
+];
+
+const findUserById = (userId) => {
+  return users.find(user => user.id === userId);
+};
+
+const getPlanById = (planId) => {
+  return subscriptionPlans.find(plan => plan.id === planId);
+};
+
+const updateUserSubscription = (userId, subscriptionData) => {
+  const user = users.find(u => u.id === userId);
+  if (user) {
+    user.subscription = subscriptionData;
+    return user;
+  }
+  return null;
+};
 
 // Mock payment processing
 const mockPaymentProcessing = async (paymentMethod, paymentDetails) => {

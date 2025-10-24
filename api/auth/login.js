@@ -1,5 +1,32 @@
 // Vercel Serverless Function: Login
-import { findUserByEmail } from '../../../lib/users.js';
+
+// Mock user database (inline for serverless compatibility)
+const users = [
+  {
+    id: 1,
+    email: 'demo@cineflix.com',
+    password: 'Demo@2024!Secure',
+    name: 'Demo User',
+    subscription: {
+      planId: 3,
+      planName: 'Premium',
+      status: 'active',
+      startDate: new Date().toISOString(),
+      paymentMethod: 'credit-card'
+    }
+  },
+  {
+    id: 2,
+    email: 'test@test.com',
+    password: 'Test@2024!Pass',
+    name: 'Test User',
+    subscription: null
+  }
+];
+
+const findUserByEmail = (email) => {
+  return users.find(user => user.email === email);
+};
 
 export default async function handler(req, res) {
   // Enable CORS
