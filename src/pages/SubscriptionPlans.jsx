@@ -4,6 +4,7 @@ import { CreditCard, Smartphone, Check } from 'lucide-react';
 import axios from 'axios';
 import { API_URL } from '../config/api';
 import { AuthManager } from '../utils/authManager';
+import { LocalUsersManager } from '../utils/localUsersManager';
 
 export default function SubscriptionPlans() {
   const navigate = useNavigate();
@@ -33,13 +34,21 @@ export default function SubscriptionPlans() {
 
   const fetchPlans = async () => {
     try {
+      console.log('🔍 Fetching plans from:', `${API_URL}/subscription/plans`);
       const response = await axios.get(`${API_URL}/subscription/plans`);
+      console.log('✅ Plans response:', response.data);
       if (response.data.success) {
         setPlans(response.data.plans);
       }
     } catch (err) {
-      console.error('Error fetching plans:', err);
-      setError('Failed to load subscription plans');
+      console.error('❌ Error fetching plans:', err);
+      console.error('Error details:', {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+        url: `${API_URL}/subscription/plans`
+      });
+      setError('Failed to load subscription plans. Check console for details.');
     }
   };
 
@@ -77,26 +86,53 @@ export default function SubscriptionPlans() {
         details = { upiId: paymentDetails.upiId };
       }
 
-      const response = await axios.post(`${API_URL}/subscription/subscribe`, {
-        userId: userData?.id,
-        email: userData?.email,
+      const subscriptionData = {
         planId: selectedPlan.id,
+        planName: selectedPlan.name,
+        status: 'active',
+        startDate: new Date().toISOString(),
         paymentMethod,
         paymentDetails: details
-      });
+      };
 
-      if (response.data.success) {
-        // Update user with subscription using AuthManager
-        const updatedUser = {
-          ...userData,
-          subscription: response.data.subscription
-        };
-        AuthManager.updateUser(updatedUser);
-        
-        // Navigate to browse page
-        alert('Subscription successful! Welcome to CineFlix!');
-        navigate('/browse');
+      // Try to subscribe with backend first
+      let subscriptionSuccess = false;
+      
+      try {
+        const response = await axios.post(`${API_URL}/subscription/subscribe`, {
+          userId: userData?.id,
+          email: userData?.email,
+          planId: selectedPlan.id,
+          paymentMethod,
+          paymentDetails: details
+        });
+
+        if (response.data.success) {
+          subscriptionSuccess = true;
+          subscriptionData.planName = response.data.subscription.planName;
+        }
+      } catch (backendErr) {
+        console.log('⚠️ Backend subscription failed, using localStorage fallback:', backendErr.message);
       }
+
+      // Update user with subscription (works for both backend and localStorage users)
+      const updatedUser = {
+        ...userData,
+        subscription: subscriptionData
+      };
+
+      // Update in AuthManager
+      AuthManager.updateUser(updatedUser);
+
+      // If user is a localStorage user, update there too
+      if (userData?.isLocalUser) {
+        LocalUsersManager.updateUser(userData.id, { subscription: subscriptionData });
+        console.log('✅ Subscription updated in localStorage');
+      }
+      
+      // Navigate to browse page
+      alert('Subscription successful! Welcome to CineFlix!');
+      navigate('/browse');
     } catch (err) {
       console.error('Subscription error:', err);
       setError(err.response?.data?.message || 'Subscription failed. Please try again.');

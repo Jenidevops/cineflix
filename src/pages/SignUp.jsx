@@ -6,6 +6,7 @@ import Footer from '../components/Footer'
 import heroimage from '../images/heroimage.png'
 import { API_URL } from '../config/api'
 import { AuthManager } from '../utils/authManager'
+import { LocalUsersManager } from '../utils/localUsersManager'
 
 export default function SignUp({ setIsAuthenticated }) {
   const location = useLocation()
@@ -63,26 +64,56 @@ export default function SignUp({ setIsAuthenticated }) {
     setErrors({})
 
     try {
-      const response = await axios.post(`${API_URL}/auth/signup`, formData)
-      
-      if (response.data.success) {
-        // Save session using AuthManager
-        AuthManager.saveSession(response.data.user)
+      // First, try to register with backend
+      try {
+        const response = await axios.post(`${API_URL}/auth/signup`, formData)
         
-        // Navigate to subscription page
-        navigate('/subscription', { state: { user: response.data.user } })
+        if (response.data.success) {
+          // Backend registration successful
+          AuthManager.saveSession(response.data.user)
+          navigate('/subscription', { state: { user: response.data.user } })
+          return
+        }
+      } catch (backendErr) {
+        console.log('⚠️ Backend signup failed, using localStorage fallback:', backendErr.message)
       }
-    } catch (err) {
-      console.error('Signup error:', err)
-      if (err.response?.status === 400 && err.response?.data?.message?.includes('already registered')) {
+
+      // Fallback: Save to localStorage
+      // Check if email already exists in localStorage
+      if (LocalUsersManager.emailExists(formData.email)) {
         setErrors({ 
           general: 'This email is already registered. Please sign in instead.' 
         })
+        setLoading(false)
+        return
+      }
+
+      // Create new local user
+      const result = LocalUsersManager.saveUser({
+        name: formData.name || formData.email.split('@')[0],
+        email: formData.email,
+        password: formData.password,
+        subscription: null
+      })
+
+      if (result.success) {
+        // Save session
+        AuthManager.saveSession(result.user)
+        
+        console.log('✅ User created in localStorage and logged in')
+        
+        // Navigate to subscription page
+        navigate('/subscription', { state: { user: result.user } })
       } else {
         setErrors({ 
-          general: err.response?.data?.message || 'Signup failed. Please try again.' 
+          general: result.message || 'Signup failed. Please try again.' 
         })
       }
+    } catch (err) {
+      console.error('Signup error:', err)
+      setErrors({ 
+        general: 'Signup failed. Please try again.' 
+      })
     } finally {
       setLoading(false)
     }

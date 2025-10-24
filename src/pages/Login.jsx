@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import heroimage from '../images/heroimage.png';
 import { API_URL } from '../config/api';
 import { AuthManager } from '../utils/authManager';
+import { LocalUsersManager } from '../utils/localUsersManager';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -62,32 +63,52 @@ export default function Login() {
     setErrors({});
 
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, formData);
+      // First, try to authenticate with backend
+      try {
+        const response = await axios.post(`${API_URL}/auth/login`, formData);
+        
+        if (response.data.success) {
+          // Backend authentication successful
+          AuthManager.saveSession(response.data.user);
+          
+          // Check if user has subscription
+          if (response.data.user.subscription && response.data.user.subscription.status === 'active') {
+            navigate('/browse');
+          } else {
+            navigate('/subscription', { state: { user: response.data.user } });
+          }
+          return;
+        }
+      } catch (backendErr) {
+        console.log('⚠️ Backend login failed, checking localStorage:', backendErr.message);
+      }
+
+      // Fallback: Check localStorage
+      const localAuth = LocalUsersManager.authenticateUser(formData.email, formData.password);
       
-      if (response.data.success) {
-        // Save session using AuthManager
-        AuthManager.saveSession(response.data.user);
+      if (localAuth.success) {
+        // Local authentication successful
+        AuthManager.saveSession(localAuth.user);
+        
+        console.log('✅ Logged in with localStorage user');
         
         // Check if user has subscription
-        if (response.data.user.subscription && response.data.user.subscription.status === 'active') {
-          // User has active subscription, go to browse
+        if (localAuth.user.subscription && localAuth.user.subscription.status === 'active') {
           navigate('/browse');
         } else {
-          // User needs to subscribe
-          navigate('/subscription', { state: { user: response.data.user } });
+          navigate('/subscription', { state: { user: localAuth.user } });
         }
+      } else {
+        // Both backend and localStorage failed
+        setErrors({ 
+          general: 'Incorrect email or password. Please try again or use demo@cineflix.com / Demo@2024!Secure' 
+        });
       }
     } catch (err) {
       console.error('Login error:', err);
-      if (err.response?.status === 401) {
-        setErrors({ 
-          general: 'Incorrect email or password. Please try again or you can use demo@cineflix.com / Demo@2024!Secure' 
-        });
-      } else {
-        setErrors({ 
-          general: err.response?.data?.message || 'Login failed. Please try again.' 
-        });
-      }
+      setErrors({ 
+        general: 'Login failed. Please try again.' 
+      });
     } finally {
       setLoading(false);
     }
