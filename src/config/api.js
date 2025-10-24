@@ -1,8 +1,15 @@
 // API Configuration for both local and production environments
 // Automatically detects environment and uses correct API endpoint
 
-const isProduction = import.meta.env.PROD;
-const isLocalDevelopment = import.meta.env.DEV;
+// Safe environment detection that works in both SSR and client
+const getEnvironment = () => {
+  if (typeof window === 'undefined') {
+    // Server-side or build time
+    return 'production';
+  }
+  // Client-side detection
+  return window.location.hostname === 'localhost' ? 'development' : 'production';
+};
 
 // API Base URL Configuration
 export const API_CONFIG = {
@@ -14,8 +21,10 @@ export const API_CONFIG = {
   
   // Current environment detection
   get BASE_URL() {
+    const env = getEnvironment();
+    
     // If in production (Vercel deployment)
-    if (isProduction) {
+    if (env === 'production') {
       return this.VERCEL_URL;
     }
     
@@ -32,10 +41,10 @@ export const getApiUrl = (endpoint) => {
   return `${API_URL}${endpoint}`;
 };
 
-// Log current configuration (only in development)
-if (isLocalDevelopment) {
+// Log current configuration (only in development, only on client)
+if (typeof window !== 'undefined' && getEnvironment() === 'development') {
   console.log('🔧 API Configuration:', {
-    environment: isProduction ? 'production' : 'development',
+    environment: getEnvironment(),
     apiUrl: API_URL
   });
 }
