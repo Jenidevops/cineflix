@@ -1,78 +1,46 @@
-# 🎬 CineFlix - Full-Stack Netflix Clone
+# 🎬 CineFlix - Netflix Clone
 
-> **A production-ready streaming platform showcasing modern full-stack development with React, Node.js, and serverless architecture. Features authentication, subscription management, localStorage persistence, and TMDB API integration.**
-
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://cineflix-movieapp.vercel.app)
-[![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black)](https://vercel.com)
-[![React](https://img.shields.io/badge/React-18.3.1-blue)](https://reactjs.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-Express-green)](https://expressjs.com/)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-
-## 🚀 Live Demo
-
-**Production Site:** [https://cineflix-movieapp.vercel.app](https://cineflix-movieapp.vercel.app)
-
-### Quick Test Credentials
-- **Demo User (Full Access):** `demo@cineflix.com` / `Demo@2024!Secure`
-- **Test User (Needs Subscription):** `test@test.com` / `Test@2024!Pass`
-- **Or create your own account** - stored in browser localStorage!
+<div align="center">
+  <h3>Production-Ready Streaming Platform with MongoDB Atlas</h3>
+  <p>Full-stack Netflix clone featuring secure authentication, real database integration, and responsive design</p>
+  
+  [![Live Demo](https://img.shields.io/badge/demo-live-success?style=for-the-badge)](https://cineflix-movieapp.vercel.app)
+  [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/cloud/atlas)
+  [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com)
+  [![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+</div>
 
 ---
 
-## 📖 Documentation
+## 🌟 Features
 
-Comprehensive guides for developers and users:
+### 🔐 Authentication & Security
+- ✅ **Secure User Registration** - bcrypt password hashing (10 salt rounds)
+- ✅ **MongoDB Atlas Database** - Production-ready cloud database
+- ✅ **Password Reset System** - 6-digit verification code with 15-min expiry
+- ✅ **Remember Me Feature** - Secure email persistence only
+- ✅ **24-Hour Sessions** - Auto-expiring sessions with refresh
+- ✅ **Show/Hide Password** - Enhanced UX on all auth forms
 
-- 📘 **[Local Testing Guide](LOCAL_TESTING_GUIDE.md)** - Complete setup and testing instructions
-- 🔧 **[Vercel Debugging Guide](VERCEL_DEBUGGING_GUIDE.md)** - Production debugging and API testing
-- 🏗️ **[Deployment Guide](DEPLOYMENT_GUIDE.md)** - Step-by-step deployment instructions
-- 📋 **[Project Overview](PROJECT_OVERVIEW.md)** - Architecture and design decisions
-- 🚦 **[User Flows](USER_FLOWS_EXPLAINED.md)** - Detailed user journey documentation
+### 🎥 Content Features
+- 🎬 **Browse Movies & TV Shows** - TMDB API integration
+- 🔍 **Real-Time Search** - Search entire movie catalog
+- ⭐ **Favorites System** - Persistent favorites with counter
+- 📺 **Continue Watching** - Resume playback progress
+- 🎭 **Movie Details** - Trailers, reviews, cast, related movies
+- 🎯 **Category Filtering** - Trending, Top 10, by Genre
 
----
+### 💳 Subscription System
+- 📦 **4 Subscription Plans** - Mobile, Basic, Standard, Premium
+- 💰 **Payment Integration** - Mock payment gateway (Credit Card, PayPal, UPI)
+- 🔒 **Protected Routes** - Content access based on subscription
+- 📊 **Subscription Tracking** - Status stored in MongoDB
 
-## 📋 Table of Contents
-
-- [Live Demo](#-live-demo)
-- [Documentation](#-documentation)
-- [Features](#-features)
-- [Tech Stack](#️-tech-stack)
-- [Architecture](#-architecture)
-- [Quick Start](#-quick-start)
-- [Authentication](#-authentication-system)
-- [Subscription Plans](#-subscription-plans)
-- [API Documentation](#-api-documentation)
-- [Deployment](#-deployment)
-- [Project Highlights](#-project-highlights)
-- [Roadmap](#-roadmap)
-
----
-
-## ✨ Features
-
-### 🎯 Core Features
-- ✅ **Full-Stack Authentication** - Signup, login, logout with session management
-- ✅ **Subscription System** - 3-tier plans (Basic, Standard, Premium)
-- ✅ **Mock Payment Gateway** - Credit Card, PayPal, UPI integration
-- ✅ **localStorage Persistence** - User data persists in browser without database
-- ✅ **Protected Routes** - Role-based access control
-- ✅ **Responsive Design** - Mobile-first, works on all devices
-
-### 🎬 Movie Features
-- 🔍 **Real-time Search** - TMDB API integration
-- � **Browse Categories** - Trending, Popular, Top Rated
-- ⭐ **Favorites System** - Save and manage favorite movies
-- 📺 **Continue Watching** - Track viewing progress
-- 🎬 **Movie Details** - Trailers, reviews, cast information
-- 🎨 **Netflix-inspired UI** - Modern, clean interface
-
-### 🛠️ Technical Features
-- ⚡ **Hybrid Backend** - Express (local) + Vercel Serverless (production)
-- � **Smart API Routing** - Environment-based URL configuration
-- 🗄️ **Dual Storage** - Backend users + localStorage users
-- � **Session Management** - 24-hour sessions with auto-refresh
-- � **Optimized Build** - Vite for fast development and production builds
-- � **PWA-Ready** - Can be installed as progressive web app
+### 🎨 User Experience
+- 📱 **Fully Responsive** - Mobile, tablet, desktop optimized
+- 🎭 **Netflix-Inspired UI** - Modern, clean interface
+- ⚡ **No Page Flickering** - Event-based state management
+- 🖱️ **Stable Dropdowns** - Smooth hover interactions
 
 ---
 
@@ -81,8 +49,8 @@ Comprehensive guides for developers and users:
 ### Frontend
 | Technology | Version | Purpose |
 |------------|---------|---------|
-| React | 18.3.1 | UI library with hooks |
-| Vite | 7.1.9 | Build tool & dev server |
+| React | 18.3.1 | Modern UI library |
+| Vite | 7.1.9 | Lightning-fast build tool |
 | React Router | 6.26.0 | Client-side routing |
 | Axios | 1.12.2 | HTTP client |
 | Tailwind CSS | 3.4.11 | Utility-first styling |
@@ -91,61 +59,15 @@ Comprehensive guides for developers and users:
 ### Backend
 | Technology | Version | Purpose |
 |------------|---------|---------|
-| Node.js | 20.x | JavaScript runtime |
-| Express | 5.1.0 | Web framework |
-| CORS | 2.8.5 | Cross-origin support |
-| Vercel Serverless | - | Production API |
+| MongoDB Atlas | - | Cloud NoSQL database |
+| Mongoose | 8.x | ODM for MongoDB |
+| bcryptjs | 2.x | Password hashing |
+| Vercel Serverless | - | API endpoints |
 
 ### APIs & Services
-- **TMDB API** - Movie database and content
-- **Vercel** - Hosting and serverless functions
-- **GitHub** - Version control and CI/CD
-
-### Development Tools
-- Concurrently - Run multiple processes
-- ESLint - Code linting
-- PostCSS - CSS processing
-- Autoprefixer - CSS vendor prefixes
-
----
-
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                         PRODUCTION                          │
-│                                                             │
-│  ┌─────────────┐         ┌──────────────────────────┐     │
-│  │   Vercel    │────────▶│  Serverless Functions    │     │
-│  │  (Frontend) │         │  /api/auth/*             │     │
-│  │   React +   │         │  /api/subscription/*     │     │
-│  │   Vite      │         └──────────────────────────┘     │
-│  └─────────────┘                                           │
-│        │                                                    │
-│        ▼                                                    │
-│  ┌─────────────┐                                           │
-│  │ localStorage│  (User data persists in browser)          │
-│  └─────────────┘                                           │
-└─────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────┐
-│                      LOCAL DEVELOPMENT                       │
-│                                                             │
-│  ┌─────────────┐         ┌──────────────────────────┐     │
-│  │ localhost   │────────▶│    Express Server         │     │
-│  │   :3000     │         │      :5001               │     │
-│  │  (Vite)     │         │  In-Memory Database      │     │
-│  └─────────────┘         └──────────────────────────┘     │
-└─────────────────────────────────────────────────────────────┘
-```
-
-**Key Design Decisions:**
-- **Hybrid Storage:** Backend users (demo/test) + localStorage users (new signups)
-- **Environment Detection:** Auto-switches between local Express and Vercel APIs
-- **Stateless Functions:** Each serverless function is self-contained
-- **Client-Side Sessions:** 24-hour localStorage sessions with auto-refresh
-
-📖 **Read more:** [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)
+- **TMDB API** - Movie & TV show data
+- **Vercel** - Hosting & deployment
+- **MongoDB Atlas** - Database hosting
 
 ---
 
@@ -153,165 +75,180 @@ Comprehensive guides for developers and users:
 
 ```
 cineflix/
-├── backend/                    # Backend server
-│   ├── server.js              # Express server entry point
-│   ├── models/                # Data models
-│   │   ├── users.js          # User database & operations
-│   │   └── subscriptionPlans.js  # Subscription plans
-│   └── routes/                # API routes
-│       ├── auth.js           # Authentication endpoints
-│       └── subscription.js   # Subscription endpoints
-├── src/                       # Frontend source
-│   ├── App.jsx               # Main app with routing
-│   ├── main.jsx              # React entry point
-│   ├── index.css             # Global styles
-│   ├── components/           # Reusable components
-│   │   ├── Navbar.jsx       # Navigation bar
-│   │   ├── Footer.jsx       # Footer component
-│   │   ├── MovieCard.jsx    # Movie display card
-│   │   ├── Hero.jsx         # Hero section
-│   │   ├── Modal.jsx        # Modal component
-│   │   ├── ProtectedRoute.jsx  # Route protection
-│   │   └── ...              # Other components
-│   ├── pages/               # Page components
-│   │   ├── GetStarted.jsx   # Landing page
-│   │   ├── Login.jsx        # Login page
-│   │   ├── SignUp.jsx       # Registration page
-│   │   ├── SubscriptionPlans.jsx  # Plan selection
-│   │   ├── Browse.jsx       # Main browse page
-│   │   └── Favorites.jsx    # User favorites
-│   ├── services/            # API services
-│   │   └── tmdbApi.js       # TMDB API integration
-│   └── utils/               # Utility functions
-│       ├── favoritesManager.js      # Favorites logic
-│       └── continueWatchingManager.js  # Watch history
-├── public/                  # Static assets
-├── package.json            # Dependencies & scripts
-├── vite.config.js         # Vite configuration
-├── tailwind.config.js     # Tailwind configuration
-└── vercel.json            # Vercel deployment config
+├── api/                          # Serverless API Functions
+│   ├── auth/
+│   │   ├── login.js             # User authentication
+│   │   ├── signup.js            # User registration
+│   │   ├── logout.js            # Session cleanup
+│   │   ├── forgot-password.js   # Password reset (generate code)
+│   │   └── reset-password.js    # Password reset (verify code)
+│   └── subscription/
+│       ├── plans.js             # Get subscription plans
+│       └── subscribe.js         # Handle subscriptions
+├── lib/
+│   ├── mongodb.js               # MongoDB connection (with caching)
+│   └── models/
+│       └── User.js              # Mongoose User schema
+├── src/
+│   ├── components/              # Reusable components
+│   │   ├── Navbar.jsx          # Navigation with profile dropdown
+│   │   ├── Hero.jsx            # Homepage hero section
+│   │   ├── MovieCard.jsx       # Movie display cards
+│   │   ├── Footer.jsx          # Footer component
+│   │   └── ...
+│   ├── pages/
+│   │   ├── GetStarted.jsx      # Landing page
+│   │   ├── Login.jsx           # Login with remember me
+│   │   ├── SignUp.jsx          # Registration form
+│   │   ├── ForgotPassword.jsx  # Password reset flow
+│   │   ├── Browse.jsx          # Main browse page
+│   │   ├── Favorites.jsx       # User favorites
+│   │   └── SubscriptionPlans.jsx
+│   ├── utils/
+│   │   ├── authManager.js      # Auth state management
+│   │   ├── favoritesManager.js # Favorites logic
+│   │   └── continueWatchingManager.js
+│   ├── services/
+│   │   └── tmdbApi.js          # TMDB API integration
+│   └── config/
+│       └── api.js              # API URL configuration
+├── .env                         # Environment variables (not in git)
+├── .env.example                 # Template for environment setup
+├── .gitignore                   # Git ignore rules
+├── vercel.json                  # Vercel deployment config
+└── package.json                 # Dependencies and scripts
 ```
+
+---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 ```bash
-Node.js >= 14.x
+Node.js 18+
 npm or yarn
-Git
+MongoDB Atlas account (free tier)
+TMDB API key (optional)
 ```
 
-### Local Development
+### 1. Clone Repository
+```bash
+git clone https://github.com/Jenidevops/cineflix.git
+cd cineflix
+```
 
-1. **Clone repository:**
-   ```bash
-   git clone https://github.com/Jenidevops/cineflix.git
-   cd cineflix
-   ```
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+### 3. Environment Setup
 
-3. **Start both servers:**
-   ```bash
-   npm start
-   ```
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:5001
+Create `.env` file in root directory:
 
-4. **Test the application:**
-   - Login with demo credentials
-   - Or create a new account (stored in localStorage)
+```env
+# MongoDB Atlas Connection
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxx.mongodb.net/cineflix?retryWrites=true&w=majority
 
-📖 **Detailed guide:** [LOCAL_TESTING_GUIDE.md](LOCAL_TESTING_GUIDE.md)
+# TMDB API (Optional - for movie data)
+VITE_TMDB_API_KEY=your_tmdb_api_key_here
+VITE_TMDB_BASE_URL=https://api.themoviedb.org/3
+VITE_TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p
+```
 
-### Optional: TMDB API Setup
+**Important:** Never commit `.env` to git. It's already in `.gitignore`.
 
-For real movie data (optional):
+### 4. Run Development Server
+```bash
+npm run dev
+```
+Visit http://localhost:5173
 
-1. Get API key from [TMDB](https://www.themoviedb.org/settings/api)
-2. Create `.env` file:
-   ```env
-   VITE_TMDB_API_KEY=your_api_key_here
-   VITE_TMDB_BASE_URL=https://api.themoviedb.org/3
-   VITE_TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p
-   ```
+### 5. Build for Production
+```bash
+npm run build
+```
 
 ---
 
-## 🔐 Authentication System
+## 🔐 MongoDB Atlas Setup
 
-### Demo Credentials
+### Step 1: Create Database
+1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+2. Create free account and cluster
+3. Database name: `cineflix`
 
-**User with Active Subscription:**
-- Email: `demo@cineflix.com`
-- Password: `Demo@2024!Secure`
-- Status: Can access browse page directly
+### Step 2: Create User
+1. Navigate to: **Database Access**
+2. Click **Add New Database User**
+3. Create username and strong password
+4. Set permissions: **Read and write to any database**
 
-**User without Subscription:**
-- Email: `test@test.com`
-- Password: `Test@2024!Pass`
-- Status: Redirected to subscription page
+### Step 3: Network Access
+1. Navigate to: **Network Access**
+2. Click **Add IP Address**
+3. Select **Allow Access from Anywhere** (0.0.0.0/0)
+   - Required for Vercel serverless functions
 
-### User Flow
+### Step 4: Get Connection String
+1. Click **Connect** on your cluster
+2. Choose **Connect your application**
+3. Copy connection string
+4. Replace `<password>` with your database user password
+5. Add to `.env` file
 
-1. **New User:**
-   - Visit landing page (/)
-   - Click "Get Started"
-   - Sign up with email/password
-   - Redirected to subscription plans
-   - Choose plan and payment method
-   - Access browse page
+---
 
-2. **Existing User:**
-   - Click "Sign In"
-   - Enter credentials
-   - Automatic redirect based on subscription status
-   - Browse movies if subscribed
+## 🌐 Deployment to Vercel
 
-3. **Session Management:**
-   - User data stored in localStorage
-   - Automatic logout clears all data
-   - Protected routes check authentication
+### Option 1: Vercel CLI (Recommended)
 
-## 💳 Subscription Plans
+```bash
+# Install Vercel CLI globally
+npm i -g vercel
 
-### Available Plans
+# Login to Vercel
+vercel login
 
-| Plan | Price | Features |
-|------|-------|----------|
-| **Basic** | $6.99/month | HD quality, Watch on 1 device, Limited content |
-| **Standard** | $12.99/month | Full HD quality, Watch on 2 devices, Full catalog |
-| **Premium** | $19.99/month | 4K + HDR, Watch on 4 devices, Premium content |
-
-### Payment Methods (Mock)
-
-- **Credit Card** - Simulated card processing
-- **PayPal** - Mock PayPal integration
-- **UPI** - Mock UPI payment
-
-**Note:** All payments are mocked for educational purposes. No real transactions occur.
-
-## 📡 API Documentation
-
-### Base URL
+# Deploy to production
+vercel --prod
 ```
-http://localhost:5001/api
-```
+
+### Option 2: GitHub Integration
+
+1. Push code to GitHub
+2. Go to [Vercel Dashboard](https://vercel.com)
+3. Click **Import Project**
+4. Select your repository
+5. Add environment variables:
+   - `MONGODB_URI` - Your MongoDB connection string
+
+### Environment Variables in Vercel
+
+1. Project Settings → Environment Variables
+2. Add:
+   ```
+   Name: MONGODB_URI
+   Value: mongodb+srv://...
+   Environment: Production
+   ```
+3. Save and redeploy
+
+---
+
+## 🔑 API Endpoints
 
 ### Authentication Endpoints
 
-#### POST `/auth/signup`
-Create a new user account.
+#### POST `/api/auth/signup`
+Register new user account
 
 **Request:**
 ```json
 {
   "name": "John Doe",
   "email": "john@example.com",
-  "password": "SecurePass123!"
+  "password": "SecurePass123"
 }
 ```
 
@@ -321,21 +258,23 @@ Create a new user account.
   "success": true,
   "message": "User created successfully",
   "user": {
-    "id": 3,
+    "id": "507f1f77bcf86cd799439011",
     "name": "John Doe",
-    "email": "john@example.com"
+    "email": "john@example.com",
+    "subscription": null,
+    "createdAt": "2025-10-30T12:00:00.000Z"
   }
 }
 ```
 
-#### POST `/auth/login`
-Authenticate user and get session data.
+#### POST `/api/auth/login`
+Authenticate user
 
 **Request:**
 ```json
 {
-  "email": "demo@cineflix.com",
-  "password": "Demo@2024!Secure"
+  "email": "john@example.com",
+  "password": "SecurePass123"
 }
 ```
 
@@ -345,35 +284,62 @@ Authenticate user and get session data.
   "success": true,
   "message": "Login successful",
   "user": {
-    "id": 1,
-    "name": "Demo User",
-    "email": "demo@cineflix.com",
+    "id": "507f1f77bcf86cd799439011",
+    "name": "John Doe",
+    "email": "john@example.com",
     "subscription": {
       "planId": 2,
       "planName": "Standard",
-      "status": "active",
-      "startDate": "2024-01-01",
-      "paymentMethod": "credit-card"
+      "status": "active"
     }
   }
 }
 ```
 
-#### POST `/auth/logout`
-End user session.
+#### POST `/api/auth/forgot-password`
+Generate password reset code
+
+**Request:**
+```json
+{
+  "email": "john@example.com"
+}
+```
 
 **Response:**
 ```json
 {
   "success": true,
-  "message": "Logged out successfully"
+  "message": "Reset code generated successfully",
+  "resetCode": "123456",
+  "note": "In production, this code would be sent via email"
+}
+```
+
+#### POST `/api/auth/reset-password`
+Reset password with verification code
+
+**Request:**
+```json
+{
+  "email": "john@example.com",
+  "resetCode": "123456",
+  "newPassword": "NewSecurePass456"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Password reset successfully"
 }
 ```
 
 ### Subscription Endpoints
 
-#### GET `/subscription/plans`
-Get all available subscription plans.
+#### GET `/api/subscription/plans`
+Get all available subscription plans
 
 **Response:**
 ```json
@@ -382,21 +348,27 @@ Get all available subscription plans.
   "plans": [
     {
       "id": 1,
+      "name": "Mobile",
+      "price": 4.99,
+      "features": ["Mobile only", "SD quality", "1 device"]
+    },
+    {
+      "id": 2,
       "name": "Basic",
-      "price": 6.99,
-      "features": ["HD", "1 device", "Limited content"]
+      "price": 9.99,
+      "features": ["Watch on phone, tablet, laptop, TV", "HD quality", "2 devices"]
     }
   ]
 }
 ```
 
-#### POST `/subscription/subscribe`
-Subscribe user to a plan.
+#### POST `/api/subscription/subscribe`
+Subscribe user to a plan
 
 **Request:**
 ```json
 {
-  "userId": 1,
+  "userId": "507f1f77bcf86cd799439011",
   "planId": 2,
   "paymentMethod": "credit-card",
   "paymentDetails": {
@@ -414,183 +386,270 @@ Subscribe user to a plan.
   "message": "Subscription activated successfully",
   "subscription": {
     "planId": 2,
-    "planName": "Standard",
-    "status": "active"
+    "planName": "Basic",
+    "status": "active",
+    "startDate": "2025-10-30T12:00:00.000Z"
   }
 }
 ```
 
-## 🌐 Deployment
+---
 
-### Current Status: ✅ Live on Vercel
+## 🔒 Security Features
 
-**Production URL:** [https://cineflix-movieapp.vercel.app](https://cineflix-movieapp.vercel.app)
+### Implemented Security Measures
 
-### Deployment Architecture
+- ✅ **bcrypt Password Hashing** - Salt rounds: 10
+- ✅ **Password Never Stored Plain** - Always hashed in database
+- ✅ **Session Management** - 24-hour auto-expiring sessions
+- ✅ **Input Validation** - Server-side validation on all endpoints
+- ✅ **CORS Protection** - Configured for security
+- ✅ **Protected Routes** - Auth required for content access
+- ✅ **Reset Code Expiry** - 15-minute validity for password resets
+- ✅ **Mongoose Schema Validation** - Prevents injection attacks
+- ✅ **Environment Variables** - Credentials never in source code
+- ✅ **Event-Based Auth** - No password in localStorage
 
-- **Frontend:** Vercel (Static SPA)
-- **Backend:** Vercel Serverless Functions (`/api` routes)
-- **Storage:** Browser localStorage (no database required)
-- **CI/CD:** Auto-deploy on git push to main
+### Password Security
+```javascript
+// Passwords are hashed before storing
+UserSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next()
+  const salt = await bcrypt.genSalt(10)
+  this.password = await bcrypt.hash(this.password, salt)
+  next()
+})
 
-### How It Works
-
-```bash
-# Push to GitHub
-git push origin main
-
-# Vercel automatically:
-# 1. Detects changes
-# 2. Builds React app
-# 3. Deploys serverless functions
-# 4. Updates live site (2-3 minutes)
+// Password comparison for login
+UserSchema.methods.comparePassword = async function(enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password)
+}
 ```
-
-📖 **Full guide:** [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)  
-🔧 **Debug production:** [VERCEL_DEBUGGING_GUIDE.md](VERCEL_DEBUGGING_GUIDE.md)
 
 ---
 
-## 🎯 Project Highlights
+## 🎯 Key Features Implementation
 
-### What Makes This Project Stand Out
+### 1. Authentication Flow
+1. User registers → Password hashed with bcrypt → Stored in MongoDB
+2. User logs in → Password compared → JWT session created
+3. Session stored in localStorage (24-hour expiry)
+4. Custom events trigger state updates (no flickering)
 
-1. **Hybrid Backend Architecture**
-   - Express server for local development
-   - Vercel serverless for production
-   - Smart environment detection
+### 2. Password Reset
+1. User clicks "Forgot password?"
+2. Enters email → 6-digit code generated
+3. Code stored in MongoDB with 15-minute expiry
+4. User enters code + new password
+5. Password updated and code invalidated
 
-2. **No Database Required**
-   - localStorage for user persistence
-   - Works perfectly for demos/portfolios
-   - Easy to showcase without backend infrastructure
+### 3. Remember Me
+- Saves **email only** (never password)
+- Stored in localStorage as `cineflix_remembered_email`
+- Auto-fills email on next login
+- Industry-standard security practice
 
-3. **Production-Ready Code**
-   - Error handling and validation
-   - Environment-based configuration
-   - Responsive across all devices
-   - SEO optimized
+### 4. Session Management
+```javascript
+// Save session (login)
+AuthManager.saveSession(user)
+window.dispatchEvent(new CustomEvent('authChanged'))
 
-4. **Developer Experience**
-   - Hot reload in development
-   - Concurrent server execution
-   - Detailed console logging
-   - Comprehensive documentation
+// Clear session (logout)
+AuthManager.clearSession()
+window.dispatchEvent(new CustomEvent('authChanged'))
 
-### Technical Achievements
+// Event-based updates (no flickering)
+window.addEventListener('authChanged', handleAuthChange)
+```
 
-- ✅ Implemented stateless serverless architecture
-- ✅ Built hybrid storage system (backend + localStorage)
-- ✅ Created smart API routing with environment detection
-- ✅ Designed Netflix-inspired responsive UI
-- ✅ Integrated external API (TMDB)
-- ✅ Implemented protected routes and session management
-- ✅ Zero-downtime deployment with Vercel
+---
+
+## 📊 Database Schema
+
+### User Model
+```javascript
+{
+  name: {
+    type: String,
+    required: true,
+    maxlength: 60
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 6,
+    select: false  // Not returned by default
+  },
+  resetCode: {
+    type: String,
+    select: false
+  },
+  resetCodeExpiry: {
+    type: Date,
+    select: false
+  },
+  subscription: {
+    planId: Number,
+    planName: String,
+    status: String,  // 'active' | 'inactive' | 'cancelled'
+    startDate: Date,
+    paymentMethod: String,
+    transactionId: String
+  },
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+---
+
+## 🐛 Bug Fixes & Improvements
+
+### Recent Updates
+- ✅ Fixed password double-hashing bug in Mongoose pre-save hook
+- ✅ Eliminated page flickering with event-based authentication
+- ✅ Fixed navigation after login (event system)
+- ✅ Improved dropdown menu stability
+- ✅ Added show/hide password toggle
+- ✅ Implemented remember me feature
+- ✅ Added password reset functionality
+- ✅ Removed localStorage fallback authentication
+- ✅ Added comprehensive error logging
+- ✅ Fixed session persistence across page reloads
+
+---
+
+## 📱 Responsive Design
+
+- **Mobile First** - Optimized for small screens
+- **Tablet Support** - Adaptive layouts
+- **Desktop Experience** - Full-featured interface
+- **Touch Friendly** - Optimized interactions
 
 ---
 
 ## 🗺️ Roadmap
 
 ### Completed ✅
-- [x] Full-stack authentication system
-- [x] Subscription management
-- [x] localStorage persistence
-- [x] Responsive design
-- [x] TMDB API integration
-- [x] Vercel deployment
-- [x] Serverless functions
+- [x] MongoDB Atlas integration
+- [x] bcrypt password hashing
+- [x] Password reset functionality
+- [x] Remember me feature
+- [x] Event-based authentication
+- [x] Show/hide password toggle
+- [x] Stable dropdown menus
+- [x] Vercel serverless deployment
 
 ### In Progress 🚧
+- [ ] Email delivery for password reset codes
 - [ ] User profile management
-- [ ] Email verification
-- [ ] Password reset functionality
+- [ ] Admin dashboard
 
 ### Planned 📋
-- [ ] Real database integration (MongoDB/PostgreSQL)
-- [ ] JWT authentication
+- [ ] Email verification on signup
 - [ ] Real payment gateway (Stripe)
-- [ ] Admin dashboard
 - [ ] Recommendation engine
-- [ ] Social features (share, reviews)
 - [ ] Multi-language support
+- [ ] Social features (reviews, sharing)
+- [ ] Watch party feature
+- [ ] Download for offline viewing
 
 ---
 
-## � Project Stats
+## 💼 For Recruiters & Developers
 
-```
-Total Files:        50+
-Lines of Code:      5,000+
-Components:         15+
-API Endpoints:      6
-Documentation:      6 guides
-Deployment Time:    2-3 minutes
-Uptime:             99.9%
-```
-
----
-
-## 💼 For Recruiters
-
-This project demonstrates:
+### This Project Demonstrates:
 
 **Frontend Skills:**
-- React 18 with modern hooks
+- React 18 with modern hooks (useState, useEffect, useContext)
 - Component-based architecture
-- State management (useState, useEffect, useContext)
-- React Router for navigation
-- Axios for API calls
-- Tailwind CSS for styling
-- Responsive design principles
+- React Router for SPA navigation
+- Axios for API integration
+- Tailwind CSS for responsive design
+- State management patterns
 
 **Backend Skills:**
-- Node.js & Express
+- MongoDB & Mongoose ODM
 - RESTful API design
-- Serverless architecture
+- Serverless architecture (Vercel Functions)
+- bcrypt password hashing
+- Input validation & error handling
 - CORS configuration
-- Error handling
-- Data validation
 
-**DevOps Skills:**
+**Database Skills:**
+- NoSQL database design
+- Mongoose schema modeling
+- Database indexing (unique email)
+- Data validation
+- Query optimization
+
+**DevOps & Tools:**
 - Git version control
 - CI/CD with Vercel
-- Environment configuration
+- Environment variable management
 - Production deployment
-- Debugging and monitoring
+- Security best practices
 
 **Best Practices:**
 - Clean, maintainable code
 - Comprehensive documentation
+- Security-first approach
 - Error handling
-- Security considerations
 - Performance optimization
+- Responsive design patterns
 
 ---
 
 ## 📄 License
 
-MIT License - Free to use for learning and portfolios!
+This project is licensed under the MIT License - free to use for learning and portfolios.
 
 ---
 
-## 🤝 Connect
+## 👨‍💻 Author
 
-**Developer:** Jenifer Nirmal Raj  
-**GitHub:** [@Jenidevops](https://github.com/Jenidevops)  
-**Project:** [CineFlix Repository](https://github.com/Jenidevops/cineflix)
-
----
-
-## 📚 Additional Resources
-
-- [React Documentation](https://react.dev/)
-- [Vite Documentation](https://vitejs.dev/)
-- [Express Documentation](https://expressjs.com/)
-- [Vercel Documentation](https://vercel.com/docs)
-- [TMDB API Docs](https://developers.themoviedb.org/3)
+**Jenifer Nirmal Raj**
+- GitHub: [@Jenidevops](https://github.com/Jenidevops)
+- Repository: [CineFlix](https://github.com/Jenidevops/cineflix)
+- Live Demo: [cineflix-movieapp.vercel.app](https://cineflix-movieapp.vercel.app)
 
 ---
 
-**⭐ If you found this project helpful, please star the repository!**
+## 🙏 Acknowledgments
 
-Made with ❤️ for learning and building amazing full-stack applications.
+- [Netflix](https://netflix.com) - Design inspiration
+- [TMDB](https://www.themoviedb.org) - Movie database API
+- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) - Database hosting
+- [Vercel](https://vercel.com) - Deployment platform
+- [React](https://react.dev) - UI library
+- [Tailwind CSS](https://tailwindcss.com) - Styling framework
+
+---
+
+## 🔗 Live Demo
+
+**Production URL:** [https://cineflix-movieapp.vercel.app](https://cineflix-movieapp.vercel.app)
+
+### Test the Application
+
+1. ✅ **Sign Up** - Create new account
+2. ✅ **Login** - Test remember me feature
+3. ✅ **Password Reset** - Try forgot password flow
+4. ✅ **Browse Movies** - Search and add favorites
+5. ✅ **Subscription** - Select a plan
+6. ✅ **Responsive** - Test on mobile device
+
+---
+
+<div align="center">
+  <h3>Made with ❤️ by Jenifer Nirmal Raj</h3>
+  <p>⭐ Star this repo if you found it helpful!</p>
+  <p><a href="https://cineflix-movieapp.vercel.app">View Live Demo</a> • <a href="https://github.com/Jenidevops/cineflix/issues">Report Bug</a> • <a href="https://github.com/Jenidevops/cineflix/issues">Request Feature</a></p>
+</div>
