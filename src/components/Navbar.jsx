@@ -90,15 +90,18 @@ export default function Navbar({ showLinks = true, onNavClick, searchComponent, 
                 </span>
               </button>
 
-              <div
-                className="flex items-center space-x-2 cursor-pointer hover:text-gray-300"
-                onClick={() => setShowDropdown(!showDropdown)}
+              <button
+                className="flex items-center space-x-2 cursor-pointer hover:text-gray-300 focus:outline-none"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setShowDropdown(!showDropdown)
+                }}
               >
                 <div className="w-8 h-8 bg-gray-600 rounded flex items-center justify-center">
                   <User size={20} className="text-white" />
                 </div>
                 <ChevronDown size={16} />
-              </div>
+              </button>
 
               {showDropdown && (
                 <div className="absolute right-0 top-full mt-2 w-48 bg-black border border-gray-700 rounded shadow-lg z-50">
@@ -119,18 +122,16 @@ export default function Navbar({ showLinks = true, onNavClick, searchComponent, 
                       <span>Settings</span>
                     </li>
                     <li 
-                      className="px-4 py-2 hover:bg-gray-700 flex items-center space-x-2 cursor-pointer" 
-                      onClick={() => {
+                      className="px-4 py-2 hover:bg-gray-700 flex items-center space-x-2 cursor-pointer border-t border-gray-700" 
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setShowDropdown(false)
+                        
                         // Clear session using AuthManager
                         AuthManager.clearSession()
                         
-                        // Call parent logout handler if available
-                        if (handleLogout) {
-                          handleLogout()
-                        }
-                        
-                        // Navigate to login and force reload
-                        window.location.href = '/login'
+                        // Navigate to login
+                        navigate('/login')
                       }}
                     >
                       <LogOut size={16} />

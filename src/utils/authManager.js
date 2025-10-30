@@ -17,6 +17,9 @@ export class AuthManager {
       localStorage.setItem(STORAGE_KEYS.AUTH_STATUS, 'true');
       localStorage.setItem(STORAGE_KEYS.SESSION_TIMESTAMP, Date.now().toString());
       console.log('✅ Session saved:', user.email);
+      
+      // Dispatch custom event
+      window.dispatchEvent(new CustomEvent('authChanged'));
     } catch (error) {
       console.error('Failed to save session:', error);
     }
@@ -66,6 +69,9 @@ export class AuthManager {
       localStorage.removeItem('cineflix_continue_watching');
       
       console.log('🔓 Session cleared');
+      
+      // Dispatch custom event
+      window.dispatchEvent(new CustomEvent('authChanged'));
     } catch (error) {
       console.error('Failed to clear session:', error);
     }

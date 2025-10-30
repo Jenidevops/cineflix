@@ -1,33 +1,5 @@
 // Vercel Serverless Function: Login
 
-// Mock user database (inline for serverless compatibility)
-const users = [
-  {
-    id: 1,
-    email: 'demo@cineflix.com',
-    password: 'Demo@2024!Secure',
-    name: 'Demo User',
-    subscription: {
-      planId: 3,
-      planName: 'Premium',
-      status: 'active',
-      startDate: new Date().toISOString(),
-      paymentMethod: 'credit-card'
-    }
-  },
-  {
-    id: 2,
-    email: 'test@test.com',
-    password: 'Test@2024!Pass',
-    name: 'Test User',
-    subscription: null
-  }
-];
-
-const findUserByEmail = (email) => {
-  return users.find(user => user.email === email);
-};
-
 export default async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -48,6 +20,13 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Dynamic imports for ES modules in serverless
+    const connectDB = (await import('../../lib/mongodb.js')).default
+    const User = (await import('../../lib/models/User.js')).default
+    
+    // Connect to database
+    await connectDB()
+
     const { email, password } = req.body;
 
     // Validation
@@ -58,31 +37,45 @@ export default async function handler(req, res) {
       });
     }
 
-    // Find user
-    const user = findUserByEmail(email);
+    // Find user with password field (normally excluded)
+    const user = await User.findOne({ email }).select('+password')
 
     if (!user) {
+      console.log('Login attempt: User not found for email:', email)
       return res.status(401).json({ 
         success: false, 
         message: 'Invalid credentials' 
       });
     }
 
-    // Check password (in production, use bcrypt)
-    if (user.password !== password) {
+    console.log('Login attempt: User found, checking password...')
+    console.log('Stored password hash:', user.password.substring(0, 20) + '...')
+
+    // Check password using bcrypt comparison
+    const isPasswordCorrect = await user.comparePassword(password)
+
+    console.log('Password comparison result:', isPasswordCorrect)
+
+    if (!isPasswordCorrect) {
       return res.status(401).json({ 
         success: false, 
         message: 'Invalid credentials' 
       });
     }
 
-    // Remove password from response
-    const { password: _, ...userWithoutPassword } = user;
+    // Return user without password
+    const userResponse = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      subscription: user.subscription,
+      createdAt: user.createdAt
+    }
 
     return res.status(200).json({
       success: true,
       message: 'Login successful',
-      user: userWithoutPassword
+      user: userResponse
     });
 
   } catch (error) {

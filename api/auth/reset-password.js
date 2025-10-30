@@ -1,4 +1,5 @@
-// Vercel Serverless Function: Signup
+// Vercel Serverless Function: Reset Password
+// Verifies reset code and updates password
 
 export default async function handler(req, res) {
   // Enable CORS
@@ -27,67 +28,52 @@ export default async function handler(req, res) {
     // Connect to database
     await connectDB()
 
-    const { name, email, password } = req.body;
+    const { email, resetCode, newPassword } = req.body;
 
     // Validation
-    if (!name || !email || !password) {
+    if (!email || !resetCode || !newPassword) {
       return res.status(400).json({ 
         success: false, 
-        message: 'Name, email, and password are required' 
+        message: 'Email, reset code, and new password are required' 
       });
     }
 
-    // Password strength validation
-    if (password.length < 6) {
+    if (newPassword.length < 6) {
       return res.status(400).json({ 
         success: false, 
         message: 'Password must be at least 6 characters' 
       });
     }
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ email })
-    if (existingUser) {
+    // Find user with reset code
+    const user = await User.findOne({ 
+      email,
+      resetCode,
+      resetCodeExpiry: { $gt: Date.now() }
+    })
+
+    if (!user) {
       return res.status(400).json({ 
         success: false, 
-        message: 'Email already registered' 
+        message: 'Invalid or expired reset code' 
       });
     }
 
-    // Create new user (password will be hashed automatically by the pre-save hook)
-    const newUser = await User.create({
-      name,
-      email,
-      password
-    })
+    // Update password (will be hashed by pre-save hook)
+    user.password = newPassword
+    user.resetCode = undefined
+    user.resetCodeExpiry = undefined
+    await user.save()
 
-    // Return user without password
-    const userResponse = {
-      id: newUser._id,
-      name: newUser.name,
-      email: newUser.email,
-      subscription: newUser.subscription,
-      createdAt: newUser.createdAt
-    }
+    console.log(`Password reset successful for ${email}`)
 
-    return res.status(201).json({
+    return res.status(200).json({
       success: true,
-      message: 'User created successfully',
-      user: userResponse
+      message: 'Password reset successfully'
     });
 
   } catch (error) {
-    console.error('Signup error:', error);
-    
-    // Handle Mongoose validation errors
-    if (error.name === 'ValidationError') {
-      const messages = Object.values(error.errors).map(err => err.message)
-      return res.status(400).json({ 
-        success: false, 
-        message: messages.join(', ')
-      });
-    }
-    
+    console.error('Reset password error:', error);
     return res.status(500).json({ 
       success: false, 
       message: 'Internal server error' 

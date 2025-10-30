@@ -3,23 +3,33 @@ import { useState, useEffect } from 'react'
 import GetStarted from './pages/GetStarted'
 import SignUp from './pages/SignUp'
 import Login from './pages/Login'
+import ForgotPassword from './pages/ForgotPassword'
 import SubscriptionPlans from './pages/SubscriptionPlans'
 import Browse from './pages/Browse'
 import Favorites from './pages/Favorites'
 import { AuthManager } from './utils/authManager'
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [user, setUser] = useState(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return AuthManager.isAuthenticated()
+  })
+  const [user, setUser] = useState(() => {
+    return AuthManager.getUser()
+  })
 
   useEffect(() => {
-    // Check authentication using AuthManager
-    const authenticated = AuthManager.isAuthenticated()
-    const userData = AuthManager.getUser()
-    
-    if (authenticated && userData) {
-      setIsAuthenticated(true)
+    // Listen for custom auth events
+    const handleAuthChange = () => {
+      const authenticated = AuthManager.isAuthenticated()
+      const userData = AuthManager.getUser()
+      setIsAuthenticated(authenticated)
       setUser(userData)
+    }
+
+    window.addEventListener('authChanged', handleAuthChange)
+    
+    return () => {
+      window.removeEventListener('authChanged', handleAuthChange)
     }
   }, [])
 
@@ -43,6 +53,7 @@ function App() {
         <Route path="/" element={<GetStarted />} />
         <Route path="/signup" element={<SignUp setIsAuthenticated={setIsAuthenticated} />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route 
           path="/subscription" 
           element={

@@ -1,29 +1,5 @@
 // Vercel Serverless Function: Subscribe to Plan
 
-// Mock user database (inline for serverless compatibility)
-const users = [
-  {
-    id: 1,
-    email: 'demo@cineflix.com',
-    password: 'Demo@2024!Secure',
-    name: 'Demo User',
-    subscription: {
-      planId: 3,
-      planName: 'Premium',
-      status: 'active',
-      startDate: new Date().toISOString(),
-      paymentMethod: 'credit-card'
-    }
-  },
-  {
-    id: 2,
-    email: 'test@test.com',
-    password: 'Test@2024!Pass',
-    name: 'Test User',
-    subscription: null
-  }
-];
-
 // Subscription plans (inline)
 const subscriptionPlans = [
   { id: 1, name: 'Basic', price: 6.99 },
@@ -31,21 +7,8 @@ const subscriptionPlans = [
   { id: 3, name: 'Premium', price: 19.99 }
 ];
 
-const findUserById = (userId) => {
-  return users.find(user => user.id === userId);
-};
-
 const getPlanById = (planId) => {
   return subscriptionPlans.find(plan => plan.id === planId);
-};
-
-const updateUserSubscription = (userId, subscriptionData) => {
-  const user = users.find(u => u.id === userId);
-  if (user) {
-    user.subscription = subscriptionData;
-    return user;
-  }
-  return null;
 };
 
 // Mock payment processing
@@ -80,7 +43,14 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { userId, planId, paymentMethod, paymentDetails } = req.body;
+    // Dynamic imports for ES modules in serverless
+    const connectDB = (await import('../../lib/mongodb.js')).default
+    const User = (await import('../../lib/models/User.js')).default
+    
+    // Connect to database
+    await connectDB()
+
+    const { userId, planId, paymentMethod, paymentDetails} = req.body;
 
     // Validation
     if (!userId || !planId || !paymentMethod) {
@@ -91,7 +61,7 @@ export default async function handler(req, res) {
     }
 
     // Verify user exists
-    const user = findUserById(userId);
+    const user = await User.findById(userId)
     if (!user) {
       return res.status(404).json({ 
         success: false, 
@@ -118,27 +88,32 @@ export default async function handler(req, res) {
       });
     }
 
-    // Create subscription data
-    const subscriptionData = {
+    // Update user subscription in database
+    user.subscription = {
       planId: plan.id,
       planName: plan.name,
       status: 'active',
-      startDate: new Date().toISOString(),
+      startDate: new Date(),
       paymentMethod: paymentMethod,
       transactionId: paymentResult.transactionId
-    };
+    }
 
-    // Update user subscription
-    const updatedUser = updateUserSubscription(userId, subscriptionData);
+    await user.save()
 
-    // Remove password from response
-    const { password: _, ...userWithoutPassword } = updatedUser;
+    // Return user response
+    const userResponse = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      subscription: user.subscription,
+      createdAt: user.createdAt
+    }
 
     return res.status(200).json({
       success: true,
       message: 'Subscription activated successfully',
-      user: userWithoutPassword,
-      subscription: subscriptionData
+      user: userResponse,
+      subscription: user.subscription
     });
 
   } catch (error) {
